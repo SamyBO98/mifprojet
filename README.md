@@ -16,11 +16,15 @@ samy.ben-othman@etu.univ-lyon1.fr
 **Rôle secondaire:** Documentation/Rapports
 
 
+
 **Ribeiro Andgel** (*11914838*)
 0695196480
 andgel.ribeiro@etu.univ-lyon1.fr
+
 **Rôle principal:** Frontend
+
 **Rôle secondaire:** Qualité et testing
+
 
 
 **Gorieu Julien** (*11923566*)
@@ -32,6 +36,7 @@ julien.gorieu@etu.univ-lyon1.fr
 **Rôle secondaire:** 
 
 
+
 **Lafaye Priska** (*11607163*)
 0637994859
 priska.lafaye@etu.univ-lyon1.fr
@@ -39,6 +44,7 @@ priska.lafaye@etu.univ-lyon1.fr
 **Rôle principal:** Qualité et testing
 
 **Rôle secondaire:** 
+
 
 
 **Javey Paul** (*11923415*)
@@ -50,6 +56,7 @@ paul.javey@etu.univ-lyon1.fr
 **Rôle secondaire:** VM et intégration
 
 
+
 **Azziz Otman** (*11709456*)
 0651815887
 otman.azziz@etu.univ-lyon1.fr
@@ -57,6 +64,7 @@ otman.azziz@etu.univ-lyon1.fr
 **Rôle principal:** VM et intégration
 
 **Rôle secondaire:** Documentation/Rapports
+
 
 
 # Liens
