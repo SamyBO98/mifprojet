@@ -13,3 +13,7 @@
 log/
 target/
 
+# Ignore le fichier mifprojet.md
+mifprojet.wiki
+master
+
