@@ -6,9 +6,6 @@ Nous avons au sommaire:
 
 - [A suivre (il n'y a aucun lien ici)]()
 
-Avant de continuer, voici quelques liens sur **nos pages Wikis** afin d'en savoir plus sur le projet
-
-- [L'équipe 7](https://forge.univ-lyon1.fr/p1709456/mifprojet/-/wikis/Equipe-7)
-- [Jalon 0](https://forge.univ-lyon1.fr/p1709456/mifprojet/-/wikis/Jalon-0)
+Avant de continuer, voici le lien vers la page [Wiki d'accueil](https://forge.univ-lyon1.fr/p1709456/mifprojet/-/wikis/Home) qui réunnit les détails sur la réalisation du projet ainsi que des informations à propos de l'équipe.
 
 ## A suivre...
