@@ -7,6 +7,7 @@ junit:
     - . setup-mvn-proxy.sh
     - chmod 400 $CI_SSH_KEY
   script:
+    - mvn clean
     - mvn install
     - mvn test
     - mvn compile
