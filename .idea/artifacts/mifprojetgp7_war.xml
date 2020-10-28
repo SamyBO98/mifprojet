@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mifprojetgp7:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>mifprojetgp7</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="mifprojetgp7.war">
+      <element id="artifact" artifact-name="mifprojetgp7:war exploded" />
+    </root>
+  </artifact>
+</component>
