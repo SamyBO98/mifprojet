@@ -36,7 +36,7 @@ public class ConnectDB extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("title") != null){
             System.out.println("Post send");
-            Event res = event.createEvent(1, req.getParameter("title"), req.getParameter("description"));
+            Event res = event.createEvent(req.getParameter("title"), req.getParameter("description"));
             req.getSession(true).setAttribute("event", res);
         } else {
             req.getSession(true).removeAttribute("event");

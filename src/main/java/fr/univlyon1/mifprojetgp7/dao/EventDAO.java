@@ -17,9 +17,8 @@ public class EventDAO {
         return em.find(Event.class, id);
     }
 
-    public Event createEvent(int id, String title, String description){
+    public Event createEvent(String title, String description){
         Event event = new Event();
-        event.setId(id);
         event.setTitle(title);
         event.setDescription(description);
         em.persist(event);

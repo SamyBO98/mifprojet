@@ -27,10 +27,6 @@ public class Event {
         return this.description;
     }
 
-    public void setId(final int id){
-        this.idEvent = id;
-    }
-
     public void setTitle(final String title){
         this.nameEvent = title;
     }

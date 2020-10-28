@@ -14,9 +14,9 @@ public class EventM {
         this.event = new EventDAO(em);
     }
 
-    public Event createEvent(int id, String title, String description){
+    public Event createEvent(String title, String description){
         em.getTransaction().begin();
-        Event res = event.createEvent(id, title, description);
+        Event res = event.createEvent(title, description);
         em.getTransaction().commit();
         return res;
     }
