@@ -11,5 +11,5 @@ junit:
     - mvn install
     - mvn test
     - mvn compile
-    - ls /builds/p1709456
-    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY /builds/p1707136/mifprojet/target/mifprojetgp7_war.war gitlabci@192.168.74.206:/opt/tomcat/webapps/mifprojetgp7_war.war
+    - ls /builds/p1709456/mifprojet/target
+    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY /builds/p1707136/mifprojet/target/mifprojetgp7.war gitlabci@192.168.74.206:/opt/tomcat/webapps/mifprojetgp7.war
