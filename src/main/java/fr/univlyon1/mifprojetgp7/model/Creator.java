@@ -11,6 +11,7 @@ public class Creator {
     @ManyToOne
     @JoinColumn(name = "eventID")
     private Event event;
+    @Id
     @OneToOne
     @JoinColumn(name = "email")
     private Account user;

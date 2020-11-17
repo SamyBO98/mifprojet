@@ -13,9 +13,7 @@ CREATE TABLE User_(
 	email varchar (20) PRIMARY KEY,
 	UserName varchar (20) NOT NULL,
 	UserFirstName varchar (20) NOT NULL,
-	coordinates varchar (20) references Location (coordinates),
-	postalCode integer references Location (postalCode),
-	countryName varchar (10) references Location (countryName)
+	coordinates varchar (20) references Location (coordinates)
 );
 
 CREATE TABLE Event (
@@ -23,9 +21,7 @@ CREATE TABLE Event (
 	EvnetName varchar (20) NOT NULL,
 	content varchar (100),
 	email varchar (20) references User_(email),
-	coordinates varchar (20) references Location (coordinates),
-	postalCode integer references Location (postalCode),
-	countryName varchar (10) references Location (countryName)
+	coordinates varchar (20) references Location (coordinates)
 );
 
 CREATE TABLE Category (
@@ -55,19 +51,4 @@ CREATE TABLE SortedEvent (
 	categoryName varchar (20) references Category (categoryName),
 	PRIMARY KEY (eventID, categoryName)
 );
-
-CREATE TABLE LocalizedEvent(
-	eventID SERIAL references Event(eventID),
-	coordinates varchar (20) references Location (coordinates),
-	PRIMARY KEY (eventID, coordinates)
-);
-
-CREATE TABLE LocalizedUser (
-	email varchar (20) references User_(email),
-	coordinates varchar (20) references Location (coordinates),
-	PRIMARY KEY (email, coordinates)
-);
-
-
-
 

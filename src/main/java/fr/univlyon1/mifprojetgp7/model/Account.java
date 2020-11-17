@@ -1,11 +1,9 @@
 package fr.univlyon1.mifprojetgp7.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Account")
+@Table(name = "User_")
 public class Account {
     @Id
     private String emailUser;
@@ -13,6 +11,9 @@ public class Account {
     private String password;
     private String firstName;
     private String lastName;
+    @ManyToOne
+    @JoinColumn(name = "coordinates")
+    private Location coordinates; // clé étrangère
 
     public String getEmailUser() {
         return this.emailUser;
