@@ -6,16 +6,16 @@ import javax.persistence.*;
 @Table(name = "User_")
 public class Account {
     @Id
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "emailuser")
     private String emailUser;
 
     @JoinColumn(name = "password")
     private String password;
 
-    @JoinColumn(name = "UserName")
+    @JoinColumn(name = "firstname")
     private String firstName;
 
-    @JoinColumn(name = "UserFirstName")
+    @JoinColumn(name = "lastname")
     private String lastName;
     @ManyToOne
     @JoinColumn(name = "coordinates")
