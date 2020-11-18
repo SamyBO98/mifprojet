@@ -13,6 +13,7 @@ CREATE TABLE User_(
 	email varchar (20) PRIMARY KEY,
 	UserName varchar (20) NOT NULL,
 	UserFirstName varchar (20) NOT NULL,
+	password varchar (50) NOT NULL,
 	coordinates varchar (20) references Location (coordinates)
 );
 
