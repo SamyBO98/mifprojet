@@ -1,5 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
+<head>
+    <jsp:include page="menu.jsp" /> 
+</head>
 <title>
     mifprojetgp7
 </title>
