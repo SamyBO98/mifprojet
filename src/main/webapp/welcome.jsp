@@ -13,15 +13,15 @@
     <title>Welcome </title>
 </head>
 <body>
-<h1>Welcome to the main page <%= ((Account)session.getAttribute("user")).getFirstName() %>  <%= ((Account)session.getAttribute("user")).getLastName() %>!</h1>
+<h1>Welcome to the main page <%= ((Account)session.getAttribute("user")).getName() %>  <%= ((Account)session.getAttribute("user")).getFirstName() %>!</h1>
 <h2>For the moment, nothing to show you...</h2>
 <h2>But don't worry, this project is in progress!</h2>
 
 <h3>
     Your informations <br/>
     Your email: <%= ((Account)session.getAttribute("user")).getEmailUser() %><br/>
-    Your first name: <%= ((Account)session.getAttribute("user")).getFirstName() %><br/>
-    Your last name: <%= ((Account)session.getAttribute("user")).getLastName() %><br/>
+    Your first name: <%= ((Account)session.getAttribute("user")).getName() %><br/>
+    Your last name: <%= ((Account)session.getAttribute("user")).getFirstName() %><br/>
 </h3>
 
 <a href="disconnect">Disconnect</a>

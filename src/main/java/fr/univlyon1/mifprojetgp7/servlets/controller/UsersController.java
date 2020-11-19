@@ -12,9 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
+import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.*;
 
 @WebServlet(name = "UsersController", urlPatterns = {"/users", "/users/*"})
 public class UsersController extends HttpServlet {
@@ -57,27 +60,32 @@ public class UsersController extends HttpServlet {
                 String name = req.getParameter("name");
                 String firstname = req.getParameter("firstname");
 
-                System.out.println(email + " " + password + " " + name + " " + firstname);
+                //Generate Salt (stored in DB)
+                String salt = getSalt(30);
+                String securedPassword = generateSecurePassword(password, salt);
 
-                Account user = account.createAccount(email, password, name, firstname);
-
-                if (user == null){
-                    page = "/logs/signup.jsp";
-                } else {
+                if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
                     page = "/logs/login.jsp";
+                } else {
+                    page = "/logs/signup.jsp";
                 }
 
             } else if (uri.get(0).equals("login")){
                 String email = req.getParameter("email");
                 String password = req.getParameter("password");
 
-                Account user = account.getAccount(email, password);
+                Account user = account.getAccount(email);
 
                 if (user == null){
                     page = "/logs/login.jsp";
                 } else {
-                    req.getSession(true).setAttribute("user", user);
-                    page = "/welcome.jsp";
+                    //Check if matches
+                    if (verifyUserPassword(password, user.getPassword(), user.getSalt())){
+                        req.getSession(true).setAttribute("user", user);
+                        page = "/welcome.jsp";
+                    } else {
+                        page = "/logs/login.jsp";
+                    }
                 }
             }
         }

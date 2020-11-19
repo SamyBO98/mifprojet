@@ -3,54 +3,77 @@ package fr.univlyon1.mifprojetgp7.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "User_")
+@Table(name = "Account")
 public class Account {
     @Id
-    @JoinColumn(name = "emailuser")
-    private String emailUser;
+    @JoinColumn(name = "email")
+    private String email;
+
+    @JoinColumn(name = "name")
+    private String name;
+
+    @JoinColumn(name = "firstName")
+    private String firstName;
 
     @JoinColumn(name = "password")
     private String password;
 
-    @JoinColumn(name = "firstname")
-    private String firstName;
+    @JoinColumn(name = "salt")
+    private String salt;
 
-    @JoinColumn(name = "lastname")
-    private String lastName;
     @ManyToOne
     @JoinColumn(name = "coordinates")
-    private Location coordinates; // clé étrangère
+    private Location coordinates;
+
+
 
     public String getEmailUser() {
-        return this.emailUser;
+        return this.email;
+    }
+
+    public String getName() {
+        return this.firstName;
+    }
+
+    public String getFirstName() {
+        return this.name;
     }
 
     public String getPassword() {
         return this.password;
     }
 
-    public String getFirstName() {
-        return this.firstName;
+    public String getSalt(){
+        return this.salt;
     }
 
-    public String getLastName() {
-        return this.lastName;
+    public Location getCoordinates(){
+        return this.coordinates;
     }
 
-    public void setEmailUser(String emailUser) {
-        this.emailUser = emailUser;
+
+    public void setEmailUser(String email) {
+        this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setSalt(String salt){
+        this.salt = salt;
+    }
+
+    public void setCoordinates(Location coordinates){
+        this.coordinates = coordinates;
     }
 
 }

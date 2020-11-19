@@ -15,15 +15,15 @@ public class AccountM {
         this.account = new AccountDAO(this.em);
     }
 
-    public Account createAccount(final String email, final String password, final String name, final String firstName){
+    public Account createAccount(final String email, final String name, final String firstName, final String password, final String salt){
         em.getTransaction().begin();
-        Account acc = account.createAccount(email, password, name, firstName);
+        Account acc = account.createAccount(email, name, firstName, password, salt);
         em.getTransaction().commit();
         return acc;
     }
 
-    public Account getAccount(final String email, final String password){
-        return account.getAccount(email, password);
+    public Account getAccount(final String email){
+        return account.getAccount(email);
     }
 
 }

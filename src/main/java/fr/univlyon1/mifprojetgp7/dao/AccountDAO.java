@@ -12,27 +12,23 @@ public class AccountDAO {
         this.em = em;
     }
 
-    public Account getAccount(final String email, final String password){
+    public Account getAccount(final String email){
         Account account = em.find(Account.class, email);
 
         if (account == null){
             return null;
-        }
+        } else return account;
 
-        if (account.getPassword().equals(password)){
-            return account;
-        } else {
-            return null;
-        }
     }
 
-    public Account createAccount(final String email, final String password, final String name, final String firstName){
+    public Account createAccount(final String email, final String name, final String firstName, final String password, final String salt){
         if (em.find(Account.class, email) == null) {
             Account account = new Account();
             account.setEmailUser(email);
+            account.setName(name);
+            account.setFirstName(firstName);
             account.setPassword(password);
-            account.setFirstName(name);
-            account.setLastName(firstName);
+            account.setSalt(salt);
             em.persist(account);
             return account;
         } else {
