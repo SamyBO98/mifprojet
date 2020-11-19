@@ -1,14 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <jsp:include page="menu.jsp" /> 
+    <meta charset="UTF-8">
 </head>
 <title>
     mifprojetgp7
 </title>
 <body>
-<a href="./users/login">Connect to this shit</a>
-<br/>
-<a href="./users/signup">Register me</a>
+    <jsp:include page="menu.jsp" />
 </body>
 </html>
