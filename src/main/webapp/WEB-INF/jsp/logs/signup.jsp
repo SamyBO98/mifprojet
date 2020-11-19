@@ -1,10 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Register</title>
-</head>
-<body>
-<form method="post" action="../users/signup">
+<form method="post" action="">
     <label>
         <h2>Email adress</h2>
         <input type="email" name="email" required>
@@ -27,6 +22,4 @@
 
     <button type="submit" name="submit" value="Create My Account">Create My Account</button>
 </form>
-</body>
-</html>
 

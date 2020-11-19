@@ -4,8 +4,15 @@
     mifprojetgp7
 </title>
 <body>
-<a href="./users/login">Connect to this shit</a>
-<br/>
-<a href="./users/signup">Register me</a>
+    <c:choose>
+        <c:when test="${ requestScope.page != null }">
+            <jsp:include page="${ requestScope.page }"/>
+        </c:when>
+        <c:otherwise>
+            <a href="./users/login">Connect to this shit</a>
+            <br/>
+            <a href="./users/signup">Register me</a>
+        </c:otherwise>
+    </c:choose>
 </body>
 </html>

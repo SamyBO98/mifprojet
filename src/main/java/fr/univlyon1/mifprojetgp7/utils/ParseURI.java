@@ -31,4 +31,10 @@ public class ParseURI {
         return res;
     }
 
+    public static String sourceURI(String uri){
+        List<String> temp = Arrays.asList(uri.split("/"));
+
+        return temp.get(1);
+    }
+
 }
