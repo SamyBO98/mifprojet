@@ -11,6 +11,11 @@
     </label>
 
     <label>
+        <h2>Confirm Password</h2>
+        <input type="password" name="passwordconfirm" required>
+    </label>
+
+    <label>
         <h2>Name</h2>
         <input type="text" name="name" required>
     </label>

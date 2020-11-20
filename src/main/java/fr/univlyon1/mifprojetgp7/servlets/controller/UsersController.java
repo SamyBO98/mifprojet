@@ -69,16 +69,22 @@ public class UsersController extends HttpServlet {
             if (uri.get(0).equals("signup")){
                 String email = req.getParameter("email");
                 String password = req.getParameter("password");
+                String passwordConfirm = req.getParameter("passwordconfirm");
                 String name = req.getParameter("name");
                 String firstname = req.getParameter("firstname");
 
-                //Generate Salt (stored in DB)
-                String salt = getSalt(30);
-                String securedPassword = generateSecurePassword(password, salt);
+                if (password.equals(passwordConfirm) && !password.equals("")){
+                    //Generate Salt (stored in DB)
+                    String salt = getSalt(30);
+                    String securedPassword = generateSecurePassword(password, salt);
 
-                if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
-                    page = "WEB-INF/jsp/logs/login.jsp";
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                    if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
+                        page = "WEB-INF/jsp/logs/login.jsp";
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                    } else {
+                        page = "WEB-INF/jsp/logs/signup.jsp";
+                    }
+
                 } else {
                     page = "WEB-INF/jsp/logs/signup.jsp";
                 }
