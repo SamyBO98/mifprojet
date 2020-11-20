@@ -33,6 +33,6 @@ public class ContributorDAO {
         return em.createQuery("SELECT c FROM Contributor c WHERE c.event = ?1 AND c.user = ?2", Contributor.class)
                 .setParameter(1, event)
                 .setParameter(2, user)
-                .getSingleResult();
+                .getResultList().get(0);
     }
 }

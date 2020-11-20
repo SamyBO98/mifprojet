@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS Event (
     eventID SERIAL PRIMARY KEY,
     title varchar(40) NOT NULL,
     content varchar(255),
-    email varchar(50) references Account(email),
+    email varchar(50) references Account(email) NOT NULL,
+    categoryName varchar(25) references Category(categoryName) NOT NULL,
     coordinates varchar(50) references Location(coordinates)
 );
 
@@ -42,8 +43,10 @@ CREATE TABLE IF NOT EXISTS Interest (
     PRIMARY KEY(email, categoryName)
 );
 
-CREATE TABLE IF NOT EXISTS SortedEvent (
-    eventID SERIAL references Event(eventID),
-    categoryName varchar(25) references Category(categoryName),
-    PRIMARY KEY(eventID, categoryName)
-);
+INSERT INTO Category VALUES('Sports');
+INSERT INTO Category VALUES('Jeux');
+INSERT INTO Category VALUES('Théâtre');
+INSERT INTO Category VALUES('Politique');
+INSERT INTO Category VALUES('Etudes');
+INSERT INTO Category VALUES('Insolite');
+INSERT INTO Category VALUES('Art');

@@ -6,6 +6,7 @@
         <h2>${event.title}</h2>
         <h3>${event.content}</h3>
         <h3>Crée par l'utilisateur ${event.account.name} ${event.account.firstName}</h3>
+        <h3>De la catégorie: ${ event.category.categoryName }</h3>
         <h4><a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/${ event.id }">Lien vers la page de l'évènement</a></h4>
     </c:forEach>
 </c:if>

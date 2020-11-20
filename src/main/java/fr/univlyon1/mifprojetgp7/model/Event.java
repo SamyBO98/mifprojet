@@ -25,6 +25,10 @@ public class Event {
     @JoinColumn(name = "coordinates")
     private Location location;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryName")
+    private Category category;
+
 
     public int getId(){
         return this.eventID;
@@ -46,6 +50,10 @@ public class Event {
         return this.location;
     }
 
+    public Category getCategory(){
+        return this.category;
+    }
+
     public void setEventID(final int eventID){
         this.eventID = eventID;
     }
@@ -64,6 +72,10 @@ public class Event {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public void setCategory(Category category){
+        this.category = category;
     }
 
 }

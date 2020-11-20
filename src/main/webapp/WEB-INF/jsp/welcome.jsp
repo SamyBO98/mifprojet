@@ -24,6 +24,11 @@
 
     <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/users/disconnect">Disconnect</a>
     <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events">Show all events</a>
+    <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/created">Show my events</a>
+
+    <!-- NOT WORKING -->
+    <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/participate">Show events I participated</a>
+
     <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/create">Create event</a>
     <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search">Search for an event</a>
 </body>
