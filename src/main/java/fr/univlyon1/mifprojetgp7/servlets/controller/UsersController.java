@@ -12,11 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
+import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
 import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.*;
 
 @WebServlet(name = "UsersController", urlPatterns = {"/users", "/users/*"})
@@ -33,23 +32,36 @@ public class UsersController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<String> uri = parseUri(req.getRequestURI(), "users");
+        String reqUri = req.getRequestURI();
+        System.out.println("GET");
+        List<String> uri = parseUri(reqUri, "users");
         String page = null;
 
         if (uri.size() == 1){
             if (uri.get(0).equals("signup")){
-                page = "/logs/signup.jsp";
+                page = "WEB-INF/jsp/logs/signup.jsp";
+                req.setAttribute("page", page);
             } else if (uri.get(0).equals("login")){
-                page = "/logs/login.jsp";
+                page = "WEB-INF/jsp/logs/login.jsp";
+                req.setAttribute("page", page);
+            } else if (uri.get(0).equals("disconnect")){
+                req.getSession(true).invalidate();
+                resp.sendRedirect("/" + sourceURI(reqUri));
+                return;
             }
         }
 
+        if (req.getSession(true).getAttribute("user") == null){
+            req.getRequestDispatcher("/index.jsp").include(req, resp);
+        } else {
+            req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+        }
 
-        req.getRequestDispatcher(page).include(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("POST");
         List<String> uri = parseUri(req.getRequestURI(), "users");
         String page = null;
 
@@ -57,18 +69,26 @@ public class UsersController extends HttpServlet {
             if (uri.get(0).equals("signup")){
                 String email = req.getParameter("email");
                 String password = req.getParameter("password");
+                String passwordConfirm = req.getParameter("passwordconfirm");
                 String name = req.getParameter("name");
                 String firstname = req.getParameter("firstname");
 
-                //Generate Salt (stored in DB)
-                String salt = getSalt(30);
-                String securedPassword = generateSecurePassword(password, salt);
+                if (password.equals(passwordConfirm) && !password.equals("")){
+                    //Generate Salt (stored in DB)
+                    String salt = getSalt(30);
+                    String securedPassword = generateSecurePassword(password, salt);
 
-                if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
-                    page = "/logs/login.jsp";
+                    if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
+                        page = "WEB-INF/jsp/logs/login.jsp";
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                    } else {
+                        page = "WEB-INF/jsp/logs/signup.jsp";
+                    }
+
                 } else {
-                    page = "/logs/signup.jsp";
+                    page = "WEB-INF/jsp/logs/signup.jsp";
                 }
+                req.setAttribute("page", page);
 
             } else if (uri.get(0).equals("login")){
                 String email = req.getParameter("email");
@@ -77,20 +97,26 @@ public class UsersController extends HttpServlet {
                 Account user = account.getAccount(email);
 
                 if (user == null){
-                    page = "/logs/login.jsp";
+                    page = "WEB-INF/jsp/logs/login.jsp";
+                    req.setAttribute("page", page);
                 } else {
                     //Check if matches
                     if (verifyUserPassword(password, user.getPassword(), user.getSalt())){
                         req.getSession(true).setAttribute("user", user);
-                        page = "/welcome.jsp";
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     } else {
-                        page = "/logs/login.jsp";
+                        page = "WEB-INF/jsp/logs/login.jsp";
+                        req.setAttribute("page", page);
                     }
                 }
             }
         }
 
-        req.getRequestDispatcher(page).include(req, resp);
+        if (req.getSession(true).getAttribute("user") == null){
+            req.getRequestDispatcher("/index.jsp").include(req, resp);
+        } else {
+            req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+        }
 
     }
 }

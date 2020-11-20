@@ -9,5 +9,8 @@
 </title>
 <body>
     <jsp:include page="menu.jsp" />
+    <c:if test="${ requestScope.page != null }">
+        <jsp:include page="${ requestScope.page }"/>
+    </c:if>
 </body>
 </html>

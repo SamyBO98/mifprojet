@@ -9,11 +9,13 @@
         <span class="border bordel-dark rounded-lg">
             <div class="d-flex flex-column px-4">
                 <h1 class="d-flex flex-row">Inscription</h1>
-                <form method="post" action="../users/signup">
+                <form method="post" action="">
                     <div class="d-flex flex-row ml-2"> Adresse e-mail </div>
                     <div class="d-flex flex-row justify-content-center"> <input type="email" name="email" required /> </div>
                     <div class="d-flex flex-row ml-2"> Mot de passe </div>
                     <div class="d-flex flex-row justify-content-center"> <input type="password" name="password" required /> </div>
+                    <div class="d-flex flex-row ml-2">  Confirmation mot de passe </div>
+                    <div class="d-flex flex-row justify-content-center"> <input type="password" name="passwordconfirm" required /> </div>
                     <div class="d-flex flex-row ml-2"> Nom </div>
                     <div class="d-flex flex-row justify-content-center"> <input type="text" name="name" required /> </div>
                     <div class="d-flex flex-row ml-2"> Prénom </div>
@@ -28,4 +30,3 @@
 </div>
 </body>
 </html>
-
