@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
@@ -22,7 +25,7 @@ import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.*;
 public class UsersController extends HttpServlet {
 
     AccountM account;
-
+    private static final Logger LOGGER = Logger.getLogger(UsersController.class.getName());
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -49,7 +52,7 @@ public class UsersController extends HttpServlet {
                     resp.sendRedirect("/" + sourceURI(reqUri));
                     return;
                 } catch (IOException e){
-                    System.out.println(e);
+                    LOGGER.log(Level.SEVERE,"Exception occured",e);
                 }
 
             }
@@ -59,18 +62,18 @@ public class UsersController extends HttpServlet {
             try{
                 req.getRequestDispatcher("/index.jsp").include(req, resp);
             }catch (IOException e){
-                System.out.println(e);
+                LOGGER.log(Level.SEVERE,"Exception occured",e);
             } catch (ServletException s){
-                System.out.println("Servlet Exception " + s);
+                LOGGER.log(Level.SEVERE,"Servlet Exception occured",s);
             }
 
         } else {
             try{
                 req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
             }catch (IOException e){
-                System.out.println(e);
+                LOGGER.log(Level.SEVERE,"Exception occured",e);
             } catch (ServletException s){
-                System.out.println("Servlet Exception " + s);
+                LOGGER.log(Level.SEVERE,"Servlet Exception occured",s);
             }
 
         }
@@ -79,7 +82,7 @@ public class UsersController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("POST");
+        LOGGER.log(Level.FINE,"POST");
         List<String> uri = parseUri(req.getRequestURI(), "users");
 
         if (uri.size() == 1){
@@ -99,14 +102,14 @@ public class UsersController extends HttpServlet {
                         try{
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
                         }catch (IOException e){
-                            System.out.println(e);
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
                         }
 
                     } else {
                         try{
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
                         } catch (IOException e){
-                            System.out.println(e);
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
                         }
 
                     }
@@ -115,7 +118,7 @@ public class UsersController extends HttpServlet {
                     try{
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
                     } catch (IOException e){
-                        System.out.println(e);
+                        LOGGER.log(Level.SEVERE,"Exception occured",e);
                     }
 
                 }
@@ -130,7 +133,7 @@ public class UsersController extends HttpServlet {
                     try{
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
                     } catch (IOException e){
-                        System.out.println(e);
+                        LOGGER.log(Level.SEVERE,"Exception occured",e);
                     }
 
                 } else {
@@ -140,14 +143,14 @@ public class UsersController extends HttpServlet {
                         try{
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                         }catch (IOException e){
-                            System.out.println(e);
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
                         }
 
                     } else {
                         try{
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
                         }catch (IOException e){
-                            System.out.println(e);
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
                         }
 
                     }

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
@@ -27,6 +29,7 @@ public class EventsController extends HttpServlet {
     static EventM event;
     static CategoryM categorie;
     static ContributorM contributor;
+    private static final Logger LOGGER = Logger.getLogger(EventsController.class.getName());
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -87,7 +90,7 @@ public class EventsController extends HttpServlet {
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                             return;
                         } catch (IOException e){
-                            System.out.println(e);
+                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
                         }
 
                     } else {
@@ -101,31 +104,36 @@ public class EventsController extends HttpServlet {
                         req.setAttribute("event", ev);
                     }
                 } catch (NumberFormatException n){
-                    System.out.println(n);
+                    LOGGER.log(Level.SEVERE,"NumberFormatException occured ",n);
                 }
 
             }
         } else if (uri.size() == 2){
             if (uri.get(1).equals("participate")){
-                Account user = (Account) req.getSession(true).getAttribute("user");
-                Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
-                if (contributor.updateContributorToEvent(ev, user)){
-                    try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/" + uri.get(0));
-                    } catch (IOException e){
-                        System.out.println(e);
-                    }
+                try{
+                    Account user = (Account) req.getSession(true).getAttribute("user");
+                    Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
+                    if (contributor.updateContributorToEvent(ev, user)){
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/" + uri.get(0));
+                        } catch (IOException e){
+                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                        }
 
-                }
-                else {
-                    try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    }catch (IOException e){
-                        System.out.println(e);
                     }
+                    else {
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        }catch (IOException e){
+                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                        }
 
+                    }
+                    return;
+                }catch (NumberFormatException n){
+                    LOGGER.log(Level.SEVERE,"NumberFormatException occured ",n);
                 }
-                return;
+
             } else if (uri.get(0).equals("search")){
                 if (uri.get(1).equals("title")){
                     page = "events/searchEvents.jsp";
@@ -147,10 +155,10 @@ public class EventsController extends HttpServlet {
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                         return;
                     } catch (IOException e){
-                        System.out.println(e);
+                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
                     }
                 }catch (NumberFormatException n){
-                    System.out.println(n);
+                    LOGGER.log(Level.SEVERE,"NumberFormatException occured ",n);
                 }
             }
 
@@ -172,18 +180,18 @@ public class EventsController extends HttpServlet {
             try{
                 req.getRequestDispatcher("/index.jsp").include(req, resp);
             }catch (IOException e){
-                System.out.println(e);
+                LOGGER.log(Level.SEVERE,"Exception occured ",e);
             }catch (ServletException s){
-                System.out.println("Servlet Exception " + s);
+                LOGGER.log(Level.SEVERE,"Servlet Exception occured ",s);
             }
 
         } else {
             try{
                 req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
             }catch (IOException e){
-                System.out.println(e);
+                LOGGER.log(Level.SEVERE,"Exception occured ",e);
             }catch (ServletException s){
-                System.out.println("Servlet Exception " + s);
+                LOGGER.log(Level.SEVERE,"Servlet Exception occured ",s);
             }
 
         }
@@ -208,14 +216,14 @@ public class EventsController extends HttpServlet {
                         try{
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                         }catch (IOException e){
-                            System.out.println(e);
+                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
                         }
 
                     } else {
                         try{
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
                         }catch (IOException e){
-                            System.out.println(e);
+                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
                         }
 
                     }
@@ -223,7 +231,7 @@ public class EventsController extends HttpServlet {
                     try{
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
                     }catch (IOException e){
-                        System.out.println(e);
+                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
                     }
 
                 }
@@ -234,7 +242,7 @@ public class EventsController extends HttpServlet {
                 try{
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/title/" + textFilter);
                 }catch (IOException e){
-                    System.out.println(e);
+                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
                 }
 
 
