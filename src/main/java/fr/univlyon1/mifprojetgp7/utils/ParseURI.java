@@ -6,6 +6,10 @@ import java.util.List;
 
 public class ParseURI {
 
+    private ParseURI() {
+        throw new IllegalStateException("ParseURI class");
+    }
+
     /**
      * Return a list of the url splitted by '/'.
      * @param uri url path.

@@ -46,7 +46,7 @@ public class EventsController extends HttpServlet {
         List<String> uri = parseUri(reqUri, "events");
         String page = null;
 
-        if (uri.size() == 0){
+        if (uri.isEmpty()){
             //Liste des évènements de catégories likés
             page = "events/events.jsp";
             req.setAttribute("page", page);
