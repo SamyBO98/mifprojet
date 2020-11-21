@@ -5,19 +5,14 @@
     <title>
         mifprojetgp7
     </title>
-    <jsp:include page="menu.jsp" /> 
+    <jsp:include page="menu.jsp" />
 </head>
 
 <body>
-    <c:choose>
-        <c:when test="${ requestScope.page != null }">
-            <jsp:include page="${ requestScope.page }"/>
-        </c:when>
-        <c:otherwise>
-            <a href="./users/login">Connect to this shit</a>
-            <br/>
-            <a href="./users/signup">Register me</a>
-        </c:otherwise>
-    </c:choose>
+<c:if test="${ requestScope.page != null }">
+    <jsp:include page="${ requestScope.page }"/>
+</c:if>
 </body>
+
+<jsp:include page="footer.jsp" />
 </html>
