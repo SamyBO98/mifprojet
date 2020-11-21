@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
@@ -22,7 +25,7 @@ import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.*;
 public class UsersController extends HttpServlet {
 
     AccountM account;
-
+    private static final Logger LOGGER = Logger.getLogger(UsersController.class.getName());
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -33,7 +36,6 @@ public class UsersController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String reqUri = req.getRequestURI();
-        System.out.println("GET");
         List<String> uri = parseUri(reqUri, "users");
         String page = null;
 
@@ -46,24 +48,42 @@ public class UsersController extends HttpServlet {
                 req.setAttribute("page", page);
             } else if (uri.get(0).equals("disconnect")){
                 req.getSession(true).invalidate();
-                resp.sendRedirect("/" + sourceURI(reqUri));
-                return;
+                try {
+                    resp.sendRedirect("/" + sourceURI(reqUri));
+                    return;
+                } catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured",e);
+                }
+
             }
         }
 
         if (req.getSession(true).getAttribute("user") == null){
-            req.getRequestDispatcher("/index.jsp").include(req, resp);
+            try{
+                req.getRequestDispatcher("/index.jsp").include(req, resp);
+            }catch (IOException e){
+                LOGGER.log(Level.SEVERE,"Exception occured",e);
+            } catch (ServletException s){
+                LOGGER.log(Level.SEVERE,"Servlet Exception occured",s);
+            }
+
         } else {
-            req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+            try{
+                req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+            }catch (IOException e){
+                LOGGER.log(Level.SEVERE,"Exception occured",e);
+            } catch (ServletException s){
+                LOGGER.log(Level.SEVERE,"Servlet Exception occured",s);
+            }
+
         }
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("POST");
+        LOGGER.log(Level.FINE,"POST");
         List<String> uri = parseUri(req.getRequestURI(), "users");
-        String page = null;
 
         if (uri.size() == 1){
             if (uri.get(0).equals("signup")){
@@ -79,16 +99,29 @@ public class UsersController extends HttpServlet {
                     String securedPassword = generateSecurePassword(password, salt);
 
                     if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
-                        page = "WEB-INF/jsp/logs/login.jsp";
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                        }catch (IOException e){
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
+                        }
+
                     } else {
-                        page = "WEB-INF/jsp/logs/signup.jsp";
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
+                        } catch (IOException e){
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
+                        }
+
                     }
 
                 } else {
-                    page = "WEB-INF/jsp/logs/signup.jsp";
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
+                    } catch (IOException e){
+                        LOGGER.log(Level.SEVERE,"Exception occured",e);
+                    }
+
                 }
-                req.setAttribute("page", page);
 
             } else if (uri.get(0).equals("login")){
                 String email = req.getParameter("email");
@@ -97,25 +130,32 @@ public class UsersController extends HttpServlet {
                 Account user = account.getAccount(email);
 
                 if (user == null){
-                    page = "WEB-INF/jsp/logs/login.jsp";
-                    req.setAttribute("page", page);
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                    } catch (IOException e){
+                        LOGGER.log(Level.SEVERE,"Exception occured",e);
+                    }
+
                 } else {
                     //Check if matches
                     if (verifyUserPassword(password, user.getPassword(), user.getSalt())){
                         req.getSession(true).setAttribute("user", user);
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        }catch (IOException e){
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
+                        }
+
                     } else {
-                        page = "WEB-INF/jsp/logs/login.jsp";
-                        req.setAttribute("page", page);
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                        }catch (IOException e){
+                            LOGGER.log(Level.SEVERE,"Exception occured",e);
+                        }
+
                     }
                 }
             }
-        }
-
-        if (req.getSession(true).getAttribute("user") == null){
-            req.getRequestDispatcher("/index.jsp").include(req, resp);
-        } else {
-            req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
         }
 
     }

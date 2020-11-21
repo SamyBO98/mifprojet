@@ -54,15 +54,16 @@ public class Event {
         return this.category;
     }
 
-    public void setEventID(final int eventID){
+
+    public void setEventID(int eventID){
         this.eventID = eventID;
     }
 
-    public void setTitle(final String title){
+    public void setTitle(String title){
         this.title = title;
     }
 
-    public void setContent(final String content){
+    public void setContent(String content){
         this.content = content;
     }
 

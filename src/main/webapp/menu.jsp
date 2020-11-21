@@ -14,6 +14,7 @@
                 <div class="p-2 bd-highlight"><a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/created"> <button  class="btn btn-secondary"> Liste de mes événements </button></a></div>
                 <div class="p-2 bd-highlight"><a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/create"> <button  class="btn btn-secondary"> Créer un événement </button></a></div>
                 <div class="p-2 bd-highlight"><a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search"> <button  class="btn btn-secondary"> Chercher un événement </button></a></div>
+                <div class="p-2 bd-highlight"><a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/participate"> <button  class="btn btn-secondary"> Mes participations </button></a></div>
             </c:when>
             <c:otherwise>
                 <div class="p-2 bd-highlight"> <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/users/signup">  <button  class="btn btn-secondary"> Inscription </button></a></div>

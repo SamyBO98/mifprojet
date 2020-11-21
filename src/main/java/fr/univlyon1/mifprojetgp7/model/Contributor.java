@@ -7,6 +7,12 @@ import javax.persistence.*;
 @Table(name = "Contributor")
 public class Contributor {
 
+    /**
+     * Ce code ne fonctionne pas
+     * Violation de contrainte: quand on ajoute un utilisateur en contributeur à l'id 1, plus personne ne peut y participer
+     * A modifier... Au plus vite :(
+     */
+
     @Id
     @ManyToOne
     @JoinColumn(name = "eventID")

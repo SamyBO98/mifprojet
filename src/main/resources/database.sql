@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Location, Account, Event, Category, Creator, Contributor, Interest, SortedEvent;
+DROP TABLE IF EXISTS Location, Account, Event, Category, Contributor, Interest, SortedEvent CASCADE;
 
 CREATE TABLE IF NOT EXISTS Location(
     coordinates varchar(50) PRIMARY KEY,
@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS Account(
     coordinates varchar(50) references Location(coordinates)
 );
 
+CREATE TABLE IF NOT EXISTS Category (
+    categoryName varchar(25) PRIMARY KEY
+);
+
 CREATE TABLE IF NOT EXISTS Event (
     eventID SERIAL PRIMARY KEY,
     title varchar(40) NOT NULL,
@@ -27,20 +31,20 @@ CREATE TABLE IF NOT EXISTS Event (
     coordinates varchar(50) references Location(coordinates)
 );
 
-CREATE TABLE IF NOT EXISTS Category (
-    categoryName varchar(25) PRIMARY KEY
-);
-
 CREATE TABLE IF NOT EXISTS Contributor(
-    email varchar(40) references Account(email),
-    eventID SERIAL references Event(eventID),
-    PRIMARY KEY(email, eventID)
+    email varchar(40),
+    eventID SERIAL,
+    PRIMARY KEY(email, eventID),
+    FOREIGN KEY(email) REFERENCES Account(email),
+    FOREIGN KEY(eventID) REFERENCES Event(eventID)
 );
 
 CREATE TABLE IF NOT EXISTS Interest (
-    email varchar(40) references Account(email),
-    categoryName varchar(25) references Category(categoryName),
-    PRIMARY KEY(email, categoryName)
+    email varchar(40),
+    categoryName varchar(25),
+    PRIMARY KEY(email, categoryName),
+    FOREIGN KEY(email) REFERENCES Account(email),
+    FOREIGN KEY(categoryName) REFERENCES Category(categoryName)
 );
 
 INSERT INTO Category VALUES('Sports');

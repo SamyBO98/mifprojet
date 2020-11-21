@@ -1,10 +1,11 @@
 package fr.univlyon1.mifprojetgp7.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Account")
-public class Account {
+public class Account implements Serializable {
     @Id
     @JoinColumn(name = "email")
     private String email;
@@ -26,17 +27,16 @@ public class Account {
     private Location coordinates;
 
 
-
     public String getEmailUser() {
         return this.email;
     }
 
     public String getName() {
-        return this.firstName;
+        return this.name;
     }
 
     public String getFirstName() {
-        return this.name;
+        return this.firstName;
     }
 
     public String getPassword() {

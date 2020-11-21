@@ -1,7 +1,6 @@
 package fr.univlyon1.mifprojetgp7.dao;
 
 import fr.univlyon1.mifprojetgp7.model.Category;
-import fr.univlyon1.mifprojetgp7.model.Event;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -19,7 +18,7 @@ public class CategoryDAO {
     }
 
     public Category getCategory(String categoryName){
-        Category category = new Category();
+        Category category;
 
         category = em.find(Category.class, categoryName);
 

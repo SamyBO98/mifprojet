@@ -20,9 +20,8 @@ public class EventDAO {
     }
 
     public Event getEvent(int eventID){
-        Event event = em.find(Event.class, eventID);
+        return em.find(Event.class, eventID);
 
-        return event;
     }
 
     public List<Event> getEvent(String title){
@@ -52,6 +51,10 @@ public class EventDAO {
 
         em.persist(event);
         return event;
+    }
+
+    public void deleteEvent(Event event){
+        em.remove(event);
     }
 
 }
