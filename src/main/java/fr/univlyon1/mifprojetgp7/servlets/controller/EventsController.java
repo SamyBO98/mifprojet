@@ -3,10 +3,8 @@ package fr.univlyon1.mifprojetgp7.servlets.controller;
 import fr.univlyon1.mifprojetgp7.metier.CategoryM;
 import fr.univlyon1.mifprojetgp7.metier.ContributorM;
 import fr.univlyon1.mifprojetgp7.metier.EventM;
-import fr.univlyon1.mifprojetgp7.model.Account;
-import fr.univlyon1.mifprojetgp7.model.Category;
-import fr.univlyon1.mifprojetgp7.model.Contributor;
-import fr.univlyon1.mifprojetgp7.model.Event;
+import fr.univlyon1.mifprojetgp7.metier.InterestM;
+import fr.univlyon1.mifprojetgp7.model.*;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletConfig;
@@ -16,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +28,7 @@ public class EventsController extends HttpServlet {
     static EventM event;
     static CategoryM categorie;
     static ContributorM contributor;
+    static InterestM interest;
     private static final Logger LOGGER = Logger.getLogger(EventsController.class.getName());
 
     @Override
@@ -37,6 +37,7 @@ public class EventsController extends HttpServlet {
         this.event = new EventM((EntityManager) config.getServletContext().getAttribute("em"));
         this.categorie = new CategoryM((EntityManager) config.getServletContext().getAttribute("em"));
         this.contributor = new ContributorM((EntityManager) config.getServletContext().getAttribute("em"));
+        this.interest = new InterestM((EntityManager) config.getServletContext().getAttribute("em"));
     }
 
     @Override
@@ -46,14 +47,24 @@ public class EventsController extends HttpServlet {
         String page = null;
 
         if (uri.size() == 0){
-            //Liste de tout les évènements
+            //Liste des évènements de catégories likés
             page = "events/events.jsp";
             req.setAttribute("page", page);
-            List<Event> events = event.getEvents();
+            List<Interest> interests = interest.getInterests((Account) req.getSession(true).getAttribute("user"));
+            List<Event> events = new ArrayList<>();
+            for (Interest inte: interests){
+                events.addAll(event.getEvent(inte.getCategory()));
+            }
             req.setAttribute("events", events);
 
         } else if (uri.size() == 1) {
-            if (uri.get(0).equals("create")) {
+            if (uri.get(0).equals("all")){
+                //Liste de tout les évènements
+                page = "events/events.jsp";
+                req.setAttribute("page", page);
+                List<Event> events = event.getEvents();
+                req.setAttribute("events", events);
+            } else if (uri.get(0).equals("create")) {
                 //Appel vers la création d'évènement
                 page = "events/createEvent.jsp";
                 req.setAttribute("page", page);
@@ -139,10 +150,12 @@ public class EventsController extends HttpServlet {
                     page = "events/searchEvents.jsp";
                     String filter = "title";
                     req.setAttribute("filter", filter);
+
                 } else {
                     page = "categories/categories.jsp";
                     List<Category> categories = categorie.getCategories();
                     req.setAttribute("categories", categories);
+
                 }
                 req.setAttribute("page", page);
             } else if (uri.get(1).equals("delete")){
@@ -173,6 +186,17 @@ public class EventsController extends HttpServlet {
                 req.setAttribute("events", events);
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
+            }
+        } else if (uri.size() == 4){
+            if (uri.get(0).equals("search") && uri.get(1).equals("category") && uri.get(3).equals("react")){
+                Category category = categorie.getCategory(uri.get(2));
+                boolean update = interest.updateInterest(category, (Account) req.getSession(true).getAttribute("user"));
+                if (update){
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/categories");
+                } else {
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                }
+                return;
             }
         }
 

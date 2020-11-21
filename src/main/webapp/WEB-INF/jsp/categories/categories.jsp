@@ -8,6 +8,11 @@
     <c:otherwise>
         <c:forEach items="${ requestScope.categories }" var="category">
             <h2>Catégorie: ${ category.categoryName }</h2>
+            <h3>
+                <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/category/${ category.categoryName }/react">
+                    Aimer / Ne pas aimer
+                </a>
+            </h3>
             <h4>
                 <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/category/${ category.categoryName }">
                     Liste ces évènements de la catégorie
