@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
@@ -25,9 +24,9 @@ import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
 @WebServlet(name = "EventsController", urlPatterns = {"/events", "/events/*"})
 public class EventsController extends HttpServlet {
 
-    EventM event;
-    CategoryM categorie;
-    ContributorM contributor;
+    static EventM event;
+    static CategoryM categorie;
+    static ContributorM contributor;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -80,30 +79,51 @@ public class EventsController extends HttpServlet {
 
             } else {
                 //Appel vers un évènement unique (redirection vers /events si l'évènement n'existe pas)
-                Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
+                try {
+                    Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
 
-                if (ev == null){
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    return;
-                } else {
-                    page = "events/event.jsp";
-                    req.setAttribute("page", page);
-                    boolean liked;
-                    Contributor contrib = contributor.getContributor(ev, (Account) req.getSession(true).getAttribute("user"));
-                    liked = contrib != null;
-                    req.setAttribute("joiners", contributor.getContributors(ev).size());
-                    req.setAttribute("like", liked);
-                    req.setAttribute("event", ev);
+                    if (ev == null){
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                            return;
+                        } catch (IOException e){
+                            System.out.println(e);
+                        }
+
+                    } else {
+                        page = "events/event.jsp";
+                        req.setAttribute("page", page);
+                        boolean liked;
+                        Contributor contrib = contributor.getContributor(ev, (Account) req.getSession(true).getAttribute("user"));
+                        liked = contrib != null;
+                        req.setAttribute("joiners", contributor.getContributors(ev).size());
+                        req.setAttribute("like", liked);
+                        req.setAttribute("event", ev);
+                    }
+                } catch (NumberFormatException n){
+                    System.out.println(n);
                 }
+
             }
         } else if (uri.size() == 2){
             if (uri.get(1).equals("participate")){
                 Account user = (Account) req.getSession(true).getAttribute("user");
                 Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
                 if (contributor.updateContributorToEvent(ev, user)){
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/" + uri.get(0));
-                } else {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/" + uri.get(0));
+                    } catch (IOException e){
+                        System.out.println(e);
+                    }
+
+                }
+                else {
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    }catch (IOException e){
+                        System.out.println(e);
+                    }
+
                 }
                 return;
             } else if (uri.get(0).equals("search")){
@@ -118,12 +138,20 @@ public class EventsController extends HttpServlet {
                 }
                 req.setAttribute("page", page);
             } else if (uri.get(1).equals("delete")){
-                Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
-                List<Contributor> contributors = contributor.getContributors(ev);
-                contributor.deleteContributors(contributors);
-                event.deleteEvent(ev);
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
+                    List<Contributor> contributors = contributor.getContributors(ev);
+                    contributor.deleteContributors(contributors);
+                    event.deleteEvent(ev);
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        return;
+                    } catch (IOException e){
+                        System.out.println(e);
+                    }
+                }catch (NumberFormatException n){
+                    System.out.println(n);
+                }
             }
 
         } else if (uri.size() == 3){
@@ -141,9 +169,23 @@ public class EventsController extends HttpServlet {
         }
 
         if (req.getSession(true).getAttribute("user") == null){
-            req.getRequestDispatcher("/index.jsp").include(req, resp);
+            try{
+                req.getRequestDispatcher("/index.jsp").include(req, resp);
+            }catch (IOException e){
+                System.out.println(e);
+            }catch (ServletException s){
+                System.out.println("Servlet Exception " + s);
+            }
+
         } else {
-            req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+            try{
+                req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+            }catch (IOException e){
+                System.out.println(e);
+            }catch (ServletException s){
+                System.out.println("Servlet Exception " + s);
+            }
+
         }
     }
 
@@ -163,18 +205,38 @@ public class EventsController extends HttpServlet {
                 if (cat != null){
                     Account user = (Account) req.getSession(true).getAttribute("user");
                     if (event.createEvent(title, contenu, user, cat) != null){
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        }catch (IOException e){
+                            System.out.println(e);
+                        }
+
                     } else {
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
+                        }catch (IOException e){
+                            System.out.println(e);
+                        }
+
                     }
                 } else {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
+                    }catch (IOException e){
+                        System.out.println(e);
+                    }
+
                 }
             }
         } else if (uri.size() == 2){
             if (uri.get(0).equals("search") && uri.get(1).equals("title")){
                 String textFilter = req.getParameter("text-filter");
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/title/" + textFilter);
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/title/" + textFilter);
+                }catch (IOException e){
+                    System.out.println(e);
+                }
+
 
             }
         }

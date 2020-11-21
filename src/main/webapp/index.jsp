@@ -1,11 +1,13 @@
+<!doctype html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
+<html lang="en">
 <head>
+    <title>
+        mifprojetgp7
+    </title>
     <jsp:include page="menu.jsp" /> 
 </head>
-<title>
-    mifprojetgp7
-</title>
+
 <body>
     <c:choose>
         <c:when test="${ requestScope.page != null }">

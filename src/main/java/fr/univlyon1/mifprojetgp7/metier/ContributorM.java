@@ -1,7 +1,6 @@
 package fr.univlyon1.mifprojetgp7.metier;
 
 import fr.univlyon1.mifprojetgp7.dao.ContributorDAO;
-import fr.univlyon1.mifprojetgp7.dao.EventDAO;
 import fr.univlyon1.mifprojetgp7.model.Account;
 import fr.univlyon1.mifprojetgp7.model.Contributor;
 import fr.univlyon1.mifprojetgp7.model.Event;

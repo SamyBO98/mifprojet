@@ -1,8 +1,6 @@
 package fr.univlyon1.mifprojetgp7.metier;
 
 import fr.univlyon1.mifprojetgp7.dao.CategoryDAO;
-import fr.univlyon1.mifprojetgp7.dao.ContributorDAO;
-import fr.univlyon1.mifprojetgp7.dao.EventDAO;
 import fr.univlyon1.mifprojetgp7.model.Category;
 
 import javax.persistence.EntityManager;

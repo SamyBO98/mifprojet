@@ -1,8 +1,9 @@
+<!doctype html>
 <%@ page import="fr.univlyon1.mifprojetgp7.model.Account" %>
 <%@ page import="fr.univlyon1.mifprojetgp7.utils.ParseURI" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="en">
 <head>
     <title>Connecté</title>
 </head>

@@ -2,7 +2,6 @@ package fr.univlyon1.mifprojetgp7.dao;
 
 import fr.univlyon1.mifprojetgp7.model.Account;
 import fr.univlyon1.mifprojetgp7.model.Category;
-import fr.univlyon1.mifprojetgp7.model.Contributor;
 import fr.univlyon1.mifprojetgp7.model.Event;
 
 import javax.persistence.EntityManager;

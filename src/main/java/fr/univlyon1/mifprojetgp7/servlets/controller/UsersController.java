@@ -45,15 +45,34 @@ public class UsersController extends HttpServlet {
                 req.setAttribute("page", page);
             } else if (uri.get(0).equals("disconnect")){
                 req.getSession(true).invalidate();
-                resp.sendRedirect("/" + sourceURI(reqUri));
-                return;
+                try {
+                    resp.sendRedirect("/" + sourceURI(reqUri));
+                    return;
+                } catch (IOException e){
+                    System.out.println(e);
+                }
+
             }
         }
 
         if (req.getSession(true).getAttribute("user") == null){
-            req.getRequestDispatcher("/index.jsp").include(req, resp);
+            try{
+                req.getRequestDispatcher("/index.jsp").include(req, resp);
+            }catch (IOException e){
+                System.out.println(e);
+            } catch (ServletException s){
+                System.out.println("Servlet Exception " + s);
+            }
+
         } else {
-            req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+            try{
+                req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
+            }catch (IOException e){
+                System.out.println(e);
+            } catch (ServletException s){
+                System.out.println("Servlet Exception " + s);
+            }
+
         }
 
     }
@@ -77,13 +96,28 @@ public class UsersController extends HttpServlet {
                     String securedPassword = generateSecurePassword(password, salt);
 
                     if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                        }catch (IOException e){
+                            System.out.println(e);
+                        }
+
                     } else {
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
+                        } catch (IOException e){
+                            System.out.println(e);
+                        }
+
                     }
 
                 } else {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
+                    } catch (IOException e){
+                        System.out.println(e);
+                    }
+
                 }
 
             } else if (uri.get(0).equals("login")){
@@ -93,14 +127,29 @@ public class UsersController extends HttpServlet {
                 Account user = account.getAccount(email);
 
                 if (user == null){
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                    } catch (IOException e){
+                        System.out.println(e);
+                    }
+
                 } else {
                     //Check if matches
                     if (verifyUserPassword(password, user.getPassword(), user.getSalt())){
                         req.getSession(true).setAttribute("user", user);
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        }catch (IOException e){
+                            System.out.println(e);
+                        }
+
                     } else {
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                        try{
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
+                        }catch (IOException e){
+                            System.out.println(e);
+                        }
+
                     }
                 }
             }
