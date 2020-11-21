@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 @WebServlet(name = "ConnectDB", loadOnStartup = 1, urlPatterns = "/")
 public class ConnectDB extends HttpServlet {
 
-    static EntityManager em;
+    EntityManager em;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
