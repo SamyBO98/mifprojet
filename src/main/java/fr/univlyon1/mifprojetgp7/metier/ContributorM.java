@@ -7,6 +7,7 @@ import fr.univlyon1.mifprojetgp7.model.Contributor;
 import fr.univlyon1.mifprojetgp7.model.Event;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class ContributorM {
 
@@ -19,12 +20,36 @@ public class ContributorM {
     }
 
     public boolean updateContributorToEvent(Event event, Account user){
-        if (!event.getContributors().contains(user)){
-            em.getTransaction().begin();
+        Contributor contribu = getContributor(event, user);
+        em.getTransaction().begin();
+        if (contribu == null){
             Contributor contrib = contributor.addContributor(event, user);
             em.getTransaction().commit();
             return contrib != null;
+        } else {
+            contributor.deleteContributor(contribu);
+            em.getTransaction().commit();
+            return getContributor(event, user) == null;
         }
-        return false;
+    }
+
+    public Contributor getContributor(Event event, Account user){
+        return contributor.getContributor(event, user);
+    }
+
+    public List<Contributor> getContributors(Account user){
+        return contributor.getContributors(user);
+    }
+
+    public List<Contributor> getContributors(Event event){
+        return contributor.getContributors(event);
+    }
+
+    public void deleteContributors(List<Contributor> contributors){
+        em.getTransaction().begin();
+        for (Contributor contrib: contributors){
+            contributor.deleteContributor(contrib);
+        }
+        em.getTransaction().commit();
     }
 }

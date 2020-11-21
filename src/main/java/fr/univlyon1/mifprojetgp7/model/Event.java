@@ -24,9 +24,6 @@ public class Event {
     @JoinColumn(name = "email")
     private Account user;
 
-    @OneToMany
-    private List<Account> users = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "coordinates")
     private Location location;
@@ -58,10 +55,6 @@ public class Event {
 
     public Category getCategory(){
         return this.category;
-    }
-
-    public List<Account> getContributors(){
-        return this.users;
     }
 
 

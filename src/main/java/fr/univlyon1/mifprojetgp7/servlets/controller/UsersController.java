@@ -33,7 +33,6 @@ public class UsersController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String reqUri = req.getRequestURI();
-        System.out.println("GET");
         List<String> uri = parseUri(reqUri, "users");
         String page = null;
 
@@ -63,7 +62,6 @@ public class UsersController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("POST");
         List<String> uri = parseUri(req.getRequestURI(), "users");
-        String page = null;
 
         if (uri.size() == 1){
             if (uri.get(0).equals("signup")){
@@ -79,16 +77,14 @@ public class UsersController extends HttpServlet {
                     String securedPassword = generateSecurePassword(password, salt);
 
                     if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
-                        page = "WEB-INF/jsp/logs/login.jsp";
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
                     } else {
-                        page = "WEB-INF/jsp/logs/signup.jsp";
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
                     }
 
                 } else {
-                    page = "WEB-INF/jsp/logs/signup.jsp";
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
                 }
-                req.setAttribute("page", page);
 
             } else if (uri.get(0).equals("login")){
                 String email = req.getParameter("email");
@@ -97,25 +93,17 @@ public class UsersController extends HttpServlet {
                 Account user = account.getAccount(email);
 
                 if (user == null){
-                    page = "WEB-INF/jsp/logs/login.jsp";
-                    req.setAttribute("page", page);
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
                 } else {
                     //Check if matches
                     if (verifyUserPassword(password, user.getPassword(), user.getSalt())){
                         req.getSession(true).setAttribute("user", user);
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     } else {
-                        page = "WEB-INF/jsp/logs/login.jsp";
-                        req.setAttribute("page", page);
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
                     }
                 }
             }
-        }
-
-        if (req.getSession(true).getAttribute("user") == null){
-            req.getRequestDispatcher("/index.jsp").include(req, resp);
-        } else {
-            req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
         }
 
     }

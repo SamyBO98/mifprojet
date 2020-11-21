@@ -5,6 +5,7 @@ import fr.univlyon1.mifprojetgp7.metier.ContributorM;
 import fr.univlyon1.mifprojetgp7.metier.EventM;
 import fr.univlyon1.mifprojetgp7.model.Account;
 import fr.univlyon1.mifprojetgp7.model.Category;
+import fr.univlyon1.mifprojetgp7.model.Contributor;
 import fr.univlyon1.mifprojetgp7.model.Event;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
@@ -50,7 +52,7 @@ public class EventsController extends HttpServlet {
 
         } else if (uri.size() == 1) {
             if (uri.get(0).equals("create")) {
-                //Liste des évènements crées
+                //Appel vers la création d'évènement
                 page = "events/createEvent.jsp";
                 req.setAttribute("page", page);
                 List<Category> categories = categorie.getCategories();
@@ -72,7 +74,8 @@ public class EventsController extends HttpServlet {
                 //Liste des évènements ou on participe
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
-                List<Event> events = ((Account) req.getSession(true).getAttribute("user")).getEvents();
+                List<Contributor> contributors = contributor.getContributors((Account) req.getSession(true).getAttribute("user"));
+                List<Event> events = event.getEvents(contributors);
                 req.setAttribute("events", events);
 
             } else {
@@ -85,6 +88,11 @@ public class EventsController extends HttpServlet {
                 } else {
                     page = "events/event.jsp";
                     req.setAttribute("page", page);
+                    boolean liked;
+                    Contributor contrib = contributor.getContributor(ev, (Account) req.getSession(true).getAttribute("user"));
+                    liked = contrib != null;
+                    req.setAttribute("joiners", contributor.getContributors(ev).size());
+                    req.setAttribute("like", liked);
                     req.setAttribute("event", ev);
                 }
             }
@@ -109,7 +117,15 @@ public class EventsController extends HttpServlet {
                     req.setAttribute("categories", categories);
                 }
                 req.setAttribute("page", page);
+            } else if (uri.get(1).equals("delete")){
+                Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
+                List<Contributor> contributors = contributor.getContributors(ev);
+                contributor.deleteContributors(contributors);
+                event.deleteEvent(ev);
+                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                return;
             }
+
         } else if (uri.size() == 3){
             if (uri.get(0).equals("search")){
                 List<Event> events;
@@ -135,7 +151,6 @@ public class EventsController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String reqUri = req.getRequestURI();
         List<String> uri = parseUri(reqUri, "events");
-        String page = null;
 
         if (uri.size() == 1){
             if (uri.get(0).equals("create")){

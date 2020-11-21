@@ -15,7 +15,7 @@
     </c:when>
 
     <c:otherwise>
-        <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/title"></a>
-        <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/category"></a>
+        <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/title">Rechercher par titre</a>
+        <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/category">Rechercher par catégorie</a>
     </c:otherwise>
 </c:choose>

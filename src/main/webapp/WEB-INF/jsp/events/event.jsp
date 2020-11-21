@@ -14,23 +14,27 @@
 
 <h3>
     De la catégorie:
-    <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/category/${ event.category.categoryName }">
-        ${ event.category.categoryName }
+    <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search/category/${ requestScope.event.category.categoryName }">
+        ${ requestScope.event.category.categoryName }
     </a>
+</h3>
+
+<h3>
+    Nombre de participants: ${ requestScope.joiners }
 </h3>
 
 <c:choose>
     <c:when test="${ event.account.emailUser.equals(sessionScope.user.emailUser) }">
-        <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/${ event.id }/delete">Supprimer l'évènement (ne fonctionne pas)</a>
+        <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/${ event.id }/delete">Supprimer l'évènement</a>
     </c:when>
     <c:otherwise>
         <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/${ event.id }/participate">
             <c:choose>
-                <c:when test="${ !requestScope.event.contributors.contains(sessionScope.user) }">
-                    Participer (fonctionne quasi pas)
+                <c:when test="${ !requestScope.like }">
+                    Participer
                 </c:when>
                 <c:otherwise>
-                    Annuler (ne fonctionne pas)
+                    Annuler
                 </c:otherwise>
             </c:choose>
         </a>

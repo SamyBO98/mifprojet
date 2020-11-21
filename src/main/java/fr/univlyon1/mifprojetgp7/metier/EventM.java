@@ -1,12 +1,13 @@
 package fr.univlyon1.mifprojetgp7.metier;
 
-import fr.univlyon1.mifprojetgp7.dao.ContributorDAO;
 import fr.univlyon1.mifprojetgp7.dao.EventDAO;
 import fr.univlyon1.mifprojetgp7.model.Account;
 import fr.univlyon1.mifprojetgp7.model.Category;
+import fr.univlyon1.mifprojetgp7.model.Contributor;
 import fr.univlyon1.mifprojetgp7.model.Event;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventM {
@@ -44,6 +45,20 @@ public class EventM {
         Event ev = event.createEvent(title, contenu, user, category);
         em.getTransaction().commit();
         return ev;
+    }
+
+    public List<Event> getEvents(List<Contributor> contributors){
+        List<Event> events = new ArrayList<>();
+        for(Contributor contributor: contributors){
+            events.add(getEvent(contributor.getEvent().getId()));
+        }
+        return events;
+    }
+
+    public void deleteEvent(Event ev){
+        em.getTransaction().begin();
+        event.deleteEvent(ev);
+        em.getTransaction().commit();
     }
 
 }

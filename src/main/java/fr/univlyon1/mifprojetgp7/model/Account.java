@@ -28,9 +28,6 @@ public class Account {
     @JoinColumn(name = "coordinates")
     private Location coordinates;
 
-    @OneToMany
-    private List<Event> events = new ArrayList<>();
-
 
     public String getEmailUser() {
         return this.email;
@@ -54,10 +51,6 @@ public class Account {
 
     public Location getCoordinates(){
         return this.coordinates;
-    }
-
-    public List<Event> getEvents(){
-        return this.events;
     }
 
 

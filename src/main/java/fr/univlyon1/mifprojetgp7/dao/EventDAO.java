@@ -2,6 +2,7 @@ package fr.univlyon1.mifprojetgp7.dao;
 
 import fr.univlyon1.mifprojetgp7.model.Account;
 import fr.univlyon1.mifprojetgp7.model.Category;
+import fr.univlyon1.mifprojetgp7.model.Contributor;
 import fr.univlyon1.mifprojetgp7.model.Event;
 
 import javax.persistence.EntityManager;
@@ -52,6 +53,10 @@ public class EventDAO {
 
         em.persist(event);
         return event;
+    }
+
+    public void deleteEvent(Event event){
+        em.remove(event);
     }
 
 }

@@ -13,7 +13,7 @@
             <h3>De la catégorie: ${ event.category.categoryName }</h3>
             <h4><a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/${ event.id }">Lien vers la page de l'évènement</a></h4>
             <c:if test="${ event.account.emailUser.equals(sessionScope.user.emailUser) }">
-                <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/${ event.id }/delete">Supprimer l'évènement (ne fonctionne pas)</a>
+                <a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/${ event.id }/delete">Supprimer l'évènement</a>
             </c:if>
         </c:forEach>
     </c:otherwise>
