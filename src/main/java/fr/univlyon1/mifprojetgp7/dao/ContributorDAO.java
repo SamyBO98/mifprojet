@@ -18,15 +18,23 @@ public class ContributorDAO {
         Contributor contributor = new Contributor();
         contributor.setEvent(event);
         contributor.setUser(user);
+        event.getContributors().add(user);
+        user.getEvents().add(event);
         em.persist(contributor);
         return contributor;
     }
 
     public int deleteContributor(Event event, Account user){
-        return em.createQuery("DELETE FROM Contributor c WHERE c.event = ?1 AND c.user = ?2", Contributor.class)
+        int res = em.createQuery("DELETE FROM Contributor c WHERE c.event = ?1 AND c.user = ?2", Contributor.class)
                 .setParameter(1, event)
                 .setParameter(2, user)
                 .executeUpdate();
+
+        event.getContributors().remove(user);
+        user.getEvents().remove(event);
+
+        return res;
+
     }
 
     public Contributor getContributor(Event event, Account user){

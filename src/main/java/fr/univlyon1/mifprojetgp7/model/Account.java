@@ -1,6 +1,9 @@
 package fr.univlyon1.mifprojetgp7.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "Account")
@@ -25,6 +28,8 @@ public class Account {
     @JoinColumn(name = "coordinates")
     private Location coordinates;
 
+    @OneToMany
+    private List<Event> events = new ArrayList<>();
 
 
     public String getEmailUser() {
@@ -49,6 +54,10 @@ public class Account {
 
     public Location getCoordinates(){
         return this.coordinates;
+    }
+
+    public List<Event> getEvents(){
+        return this.events;
     }
 
 

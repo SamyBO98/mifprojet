@@ -9,7 +9,7 @@
             <property name="hibernate.connection.user" value="p1709456" />
             <property name="hibernate.connection.password" value="password" />
             <!-- Utiliser le fichier microblog.sql pour créer les tables -->
-            <property name="hibernate.hbm2ddl.auto" value="validate" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect" />
             <property name="hibernate.format_sql" value="true" />
         </properties>

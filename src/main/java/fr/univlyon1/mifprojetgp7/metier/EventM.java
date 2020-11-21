@@ -1,6 +1,5 @@
 package fr.univlyon1.mifprojetgp7.metier;
 
-import fr.univlyon1.mifprojetgp7.dao.CategoryDAO;
 import fr.univlyon1.mifprojetgp7.dao.ContributorDAO;
 import fr.univlyon1.mifprojetgp7.dao.EventDAO;
 import fr.univlyon1.mifprojetgp7.model.Account;
@@ -14,12 +13,10 @@ public class EventM {
 
     private EntityManager em;
     private EventDAO event;
-    private ContributorDAO contributor;
 
     public EventM(EntityManager em){
         this.em = em;
         this.event = new EventDAO(this.em);
-        this.contributor = new ContributorDAO(this.em);
     }
 
     public List<Event> getEvents(){
@@ -47,22 +44,6 @@ public class EventM {
         Event ev = event.createEvent(title, contenu, user, category);
         em.getTransaction().commit();
         return ev;
-    }
-
-    public boolean updateContributorToEvent(Event event, Account user){
-        if (contributor.getContributor(event, user) == null){
-            if (contributor.addContributor(event, user) != null){
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (contributor.deleteContributor(event, user) > 0){
-                return true;
-            } else {
-                return false;
-            }
-        }
     }
 
 }

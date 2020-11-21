@@ -1,6 +1,9 @@
 package fr.univlyon1.mifprojetgp7.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "Event")
@@ -20,6 +23,9 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "email")
     private Account user;
+
+    @OneToMany
+    private List<Account> users = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "coordinates")
@@ -54,15 +60,20 @@ public class Event {
         return this.category;
     }
 
-    public void setEventID(final int eventID){
+    public List<Account> getContributors(){
+        return this.users;
+    }
+
+
+    public void setEventID(int eventID){
         this.eventID = eventID;
     }
 
-    public void setTitle(final String title){
+    public void setTitle(String title){
         this.title = title;
     }
 
-    public void setContent(final String content){
+    public void setContent(String content){
         this.content = content;
     }
 
