@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-center">
         <span class="border bordel-dark rounded-lg">
             <div class="d-flex flex-column px-4">
-                <h1 class="d-flex flex-row justify-content-center">Inscription</h1>
+                <h1 class="d-flex flex-row justify-content-center">Connexion</h1>
                 <form method="post" action="">
                     <div class="d-flex flex-row ml-2"> Adresse e-mail </div>
                     <div class="d-flex flex-row justify-content-center"> <input type="email" name="email" required /> </div>

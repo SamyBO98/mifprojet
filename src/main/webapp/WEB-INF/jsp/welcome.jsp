@@ -8,9 +8,10 @@
     <title>Connecté</title>
 </head>
 <body>
-<h1>Welcome to the main page <%= ((Account)session.getAttribute("user")).getName() %>  <%= ((Account)session.getAttribute("user")).getFirstName() %>!</h1>
-<h2>For the moment, nothing to show you...</h2>
-<h2>But don't worry, this project is in progress!</h2>
+    <jsp:include page="${request.requestURI}/menu.jsp" />
+    <h1>Welcome to the main page <%= ((Account)session.getAttribute("user")).getName() %>  <%= ((Account)session.getAttribute("user")).getFirstName() %>!</h1>
+    <h2>For the moment, nothing to show you...</h2>
+    <h2>But don't worry, this project is in progress!</h2>
 
 <h3>
     Your informations <br/>
@@ -19,21 +20,8 @@
     Your last name: <%= ((Account)session.getAttribute("user")).getFirstName() %><br/>
 </h3>
 
-<c:if test="${ requestScope.page != null }">
-    <jsp:include page="${ requestScope.page }"/>
-</c:if>
-
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events">Events interested</a>
-
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/all">Show all events</a>
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/created">Show my events</a>
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/participate">Show all events I participate</a>
-
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/create">Create event</a>
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/events/search">Search for an event</a>
-
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/users/profile">My profile</a>
-<a href="/<%= ParseURI.sourceURI(request.getRequestURI()) %>/users/disconnect">Disconnect</a>
-
+    <c:if test="${ requestScope.page != null }">
+        <jsp:include page="${ requestScope.page }"/>
+    </c:if>
 </body>
 </html>
