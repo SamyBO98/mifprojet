@@ -18,7 +18,7 @@ import fr.univlyon1.mifprojetgp7.model.Interest;
 
 public class InterestMTest {
     
-    /*EntityManager em;
+    EntityManager em;
     InterestM interestM;
     Account userTest;
     Category category;
@@ -53,5 +53,5 @@ public class InterestMTest {
 	
 	interestM.updateInterest(category, userTest);
 	assertEquals(null, interestM.getInterest(category, userTest));
-    } */
+    }
 }

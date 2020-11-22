@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class PasswordHashTest {
 
-    /*@Test
+    @Test
     public void TestPasswordHash() {
         System.out.println(">> TEST: Hashing Password <<");
         String password = "password";
@@ -20,6 +20,6 @@ public class PasswordHashTest {
         String returnValue = Base64.getEncoder().encodeToString(securePassword);
         boolean test = verifyUserPassword("password", returnValue, "salt");
         assertTrue(test);
-    }*/
+    }
 
 }

@@ -12,7 +12,7 @@ import fr.univlyon1.mifprojetgp7.model.Category;
 
 public class CategoryMTest {
     
-    /*EntityManager em;
+    EntityManager em;
     CategoryM categoryM;
     
     public CategoryMTest() {
@@ -24,5 +24,5 @@ public class CategoryMTest {
     public void getCategoryFromCategoryM() {
 	Category c = categoryM.getCategory("Sports");
 	assertEquals("Sports", c.getCategoryName());
-    }*/
+    }
 }

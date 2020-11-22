@@ -18,7 +18,7 @@ import fr.univlyon1.mifprojetgp7.model.Event;
 
 public class EventMTest {
     
-    /*EntityManager em;
+    EntityManager em;
     EventM eventM;
     CategoryM categoryM;
     AccountM accountM;
@@ -76,7 +76,7 @@ public class EventMTest {
 	    assertEquals(null, eventM.getEvent(e.getId()));
 	}
 	assertEquals(0,eventM.getEvent(userTest).size());
-    }*/
+    }
     
     
 }

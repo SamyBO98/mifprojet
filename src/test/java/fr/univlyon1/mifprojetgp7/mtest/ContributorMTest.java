@@ -20,7 +20,7 @@ import fr.univlyon1.mifprojetgp7.model.Event;
 
 public class ContributorMTest {
     
-    /*EntityManager em;
+    EntityManager em;
     ContributorM contributorM;
     Account userTest;
     EventM eventM;
@@ -81,6 +81,6 @@ public class ContributorMTest {
 	contributors = contributorM.getContributors(userTest);
 	assertEquals(0,contributors.size());
 	eventM.deleteEvent(eventTest);
-    }*/
+    }
 
 }
