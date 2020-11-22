@@ -21,4 +21,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public boolean equals(Object o) {
+	if (o instanceof Category) {
+	    return ((Category) o).getCategoryName().equals(categoryName);
+	}
+
+	return false;
+    }
 }

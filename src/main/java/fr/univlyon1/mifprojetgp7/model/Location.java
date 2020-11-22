@@ -69,4 +69,11 @@ public class Location {
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
+
+    public boolean equals(Object o) {
+	if (o instanceof Location) {
+	    return ((Location) o).getCoordinates().equals(coordinates);
+	}
+	return false;
+    }
 }
