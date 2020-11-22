@@ -44,6 +44,10 @@ public class ContributorMTest {
     @Test
     public void getContributorsByUser() {
 	List<Contributor> contributors = contributorM.getContributors(userTest);
+	if(contributors.size() > 0) {
+	    contributorM.deleteContributors(contributors);
+	}
+	contributors = contributorM.getContributors(userTest);
 	assertEquals(0,contributors.size());
     }
     
