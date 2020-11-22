@@ -133,11 +133,7 @@ public class EventsController extends HttpServlet {
 
                     }
                     else {
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                        }catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                        }
+                        tryAndCatchRedirect(req,resp,"/events");
 
                     }
                     return;
@@ -208,18 +204,10 @@ public class EventsController extends HttpServlet {
                 Category category = categorie.getCategory(uri.get(2));
                 boolean update = interest.updateInterest(category, (Account) req.getSession(true).getAttribute("user"));
                 if (update){
-                    try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/categories");
-                    }catch (IOException e){
-                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                    }
+                    tryAndCatchRedirect(req,resp,"/events/search/categories");
 
                 } else {
-                    try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    }catch (IOException e){
-                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                    }
+                    tryAndCatchRedirect(req,resp,"/events");
 
                 }
                 return;
@@ -243,23 +231,10 @@ public class EventsController extends HttpServlet {
         }
 
         if (req.getSession(true).getAttribute("user") == null){
-            try{
-                req.getRequestDispatcher("/index.jsp").include(req, resp);
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured ",e);
-            }catch (ServletException s){
-                LOGGER.log(Level.SEVERE,"Servlet Exception occured ",s);
-            }
+            tryAndCatchRequest(req,resp,"/index.jsp");
 
         } else {
-            try{
-                req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured ",e);
-            }catch (ServletException s){
-                LOGGER.log(Level.SEVERE,"Servlet Exception occured ",s);
-            }
-
+            tryAndCatchRequest(req,resp,"/WEB-INF/jsp/welcome.jsp");
         }
     }
 
@@ -279,64 +254,65 @@ public class EventsController extends HttpServlet {
                 if (cat != null){
                     Account user = (Account) req.getSession(true).getAttribute("user");
                     if (event.createEvent(title, contenu, user, cat) != null){
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                        }catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                        }
+                        //
+                        tryAndCatchRedirect(req,resp,"/events");
 
                     } else {
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
-                        }catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                        }
+                        //
+                        tryAndCatchRedirect(req,resp,"/events/create");
 
                     }
                 } else {
-                    try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/create");
-                    }catch (IOException e){
-                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                    }
+                    //
+                    tryAndCatchRedirect(req,resp,"/events/create");
 
                 }
             } else {
-                try{
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    return;
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                }
+                //
+                tryAndCatchRedirect(req,resp,"/events");
 
             }
         } else if (uri.size() == 2){
             if (uri.get(0).equals("search") && uri.get(1).equals("title")){
                 String textFilter = req.getParameter("text-filter");
-                try{
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/title/" + textFilter);
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                }
+                tryAndCatchRedirect(req,resp,"/events/search/title/",textFilter);
 
 
             } else {
-                try{
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    return;
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
-                }
+                tryAndCatchRedirect(req,resp,"/events");
 
             }
         } else {
-            try{
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured ",e);
-            }
+            tryAndCatchRedirect(req,resp,"/events");
 
+        }
+    }
+
+    private void tryAndCatchRedirect(HttpServletRequest req, HttpServletResponse resp, String lastParamRedirect){
+        try{
+            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect);
+            return;
+        }catch (IOException e){
+            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+        }
+    }
+
+    private void tryAndCatchRedirect(HttpServletRequest req, HttpServletResponse resp, String lastParamRedirect, String textFilter){
+        try{
+            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect + textFilter);
+            return;
+        }catch (IOException e){
+            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+        }
+    }
+
+    private void tryAndCatchRequest(HttpServletRequest req, HttpServletResponse resp, String param){
+        try{
+            req.getRequestDispatcher(param).include(req, resp);
+        }catch (IOException e){
+            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+        }catch (ServletException s){
+            LOGGER.log(Level.SEVERE,"Servlet Exception occured ",s);
         }
     }
 

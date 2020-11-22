@@ -134,27 +134,15 @@ public class UsersController extends HttpServlet {
                     String securedPassword = generateSecurePassword(password, salt);
 
                     if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
-                        }catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured",e);
-                        }
+                        tryAndCatch(req,resp,"/users/login");
 
                     } else {
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
-                        } catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured",e);
-                        }
+                        tryAndCatch(req,resp,"/users/signup");
 
                     }
 
                 } else {
-                    try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/signup");
-                    } catch (IOException e){
-                        LOGGER.log(Level.SEVERE,"Exception occured",e);
-                    }
+                    tryAndCatch(req,resp,"/users/signup");
 
                 }
 
@@ -165,28 +153,16 @@ public class UsersController extends HttpServlet {
                 Account user = account.getAccount(email);
 
                 if (user == null){
-                    try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
-                    } catch (IOException e){
-                        LOGGER.log(Level.SEVERE,"Exception occured",e);
-                    }
+                    tryAndCatch(req,resp,"/users/login");
 
                 } else {
                     //Check if matches
                     if (verifyUserPassword(password, user.getPassword(), user.getSalt())){
                         req.getSession(true).setAttribute("user", user);
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                        }catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured",e);
-                        }
+                        tryAndCatch(req,resp,"/events");
 
                     } else {
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/users/login");
-                        }catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured",e);
-                        }
+                        tryAndCatch(req,resp,"/users/login");
 
                     }
                 }
@@ -209,5 +185,13 @@ public class UsersController extends HttpServlet {
 
         }
 
+    }
+    private void tryAndCatch(HttpServletRequest req, HttpServletResponse resp, String lastParamRedirect){
+        try{
+            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect);
+            return;
+        }catch (IOException e){
+            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+        }
     }
 }
