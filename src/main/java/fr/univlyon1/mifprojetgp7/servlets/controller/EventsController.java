@@ -161,7 +161,7 @@ public class EventsController extends HttpServlet {
                     contributor.deleteContributors(contributors);
                     event.deleteEvent(ev);
                     try{
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/created");
                         return;
                     } catch (IOException e){
                         LOGGER.log(Level.SEVERE,"Exception occured ",e);
@@ -310,9 +310,9 @@ public class EventsController extends HttpServlet {
         try{
             req.getRequestDispatcher(param).include(req, resp);
         }catch (IOException e){
-            LOGGER.log(Level.SEVERE,"Exception occured ",e);
-        }catch (ServletException s){
-            LOGGER.log(Level.SEVERE,"Servlet Exception occured ",s);
+            LOGGER.log(Level.SEVERE,"Exception occured " ,e);
+         } catch (ServletException s) {
+            LOGGER.log(Level.SEVERE ,"Servlet Exception occured " ,s);
         }
     }
 

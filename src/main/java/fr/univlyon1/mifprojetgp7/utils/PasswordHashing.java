@@ -9,7 +9,11 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
 
-public class PasswordHashing {
+public final class PasswordHashing {
+
+    private PasswordHashing() {
+        throw new IllegalStateException("PasswordHashing class");
+    }
 
     private static final Random RANDOM = new SecureRandom();
     private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXY"

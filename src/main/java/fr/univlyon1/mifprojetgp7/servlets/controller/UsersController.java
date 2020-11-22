@@ -23,15 +23,50 @@ import java.util.logging.Level;
 
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
-import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.*;
+import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.getSalt;
+import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.generateSecurePassword;
+import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.verifyUserPassword;
+
 
 @WebServlet(name = "UsersController", urlPatterns = {"/users", "/users/*"})
 public class UsersController extends HttpServlet {
 
-    AccountM account;
-    InterestM interest;
-    EventM event;
-    ContributorM contributor;
+    public AccountM getAccount() {
+        return account;
+    }
+
+    public void setAccount(final AccountM account) {
+        this.account = account;
+    }
+
+    public InterestM getInterest() {
+        return interest;
+    }
+
+    public void setInterest(final InterestM interest) {
+        this.interest = interest;
+    }
+
+    public EventM getEvent() {
+        return event;
+    }
+
+    public void setEvent(final EventM event) {
+        this.event = event;
+    }
+
+    public ContributorM getContributor() {
+        return contributor;
+    }
+
+    public void setContributor(final ContributorM contributor) {
+        this.contributor = contributor;
+    }
+
+    private AccountM account;
+    private InterestM interest;
+    private EventM event;
+    private ContributorM contributor;
     private static final Logger LOGGER = Logger.getLogger(UsersController.class.getName());
 
     @Override
@@ -64,7 +99,7 @@ public class UsersController extends HttpServlet {
                     resp.sendRedirect("/" + sourceURI(reqUri));
                     return;
                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+                    LOGGER.log(Level.SEVERE, "Exception occured", e);
                 }
 
             } else if (uri.get(0).equals("profile")) {
@@ -84,7 +119,7 @@ public class UsersController extends HttpServlet {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
                  } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+                    LOGGER.log(Level.SEVERE, "Exception occured", e);
                 }
 
             }
@@ -93,7 +128,7 @@ public class UsersController extends HttpServlet {
                 resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                 return;
              } catch (IOException e) {
-                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+                LOGGER.log(Level.SEVERE, "Exception occured", e);
             }
 
         }
@@ -102,18 +137,18 @@ public class UsersController extends HttpServlet {
              try {
                 req.getRequestDispatcher("/index.jsp").include(req, resp);
             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+                LOGGER.log(Level.SEVERE, "Exception occured", e);
             } catch (ServletException s) {
-                LOGGER.log(Level.SEVERE ,"Servlet Exception occured" ,s);
+                LOGGER.log(Level.SEVERE, "Servlet Exception occured", s);
             }
 
         } else {
              try {
                 req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
              } catch (IOException e) {
-                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+                LOGGER.log(Level.SEVERE, "Exception occured", e);
             } catch (ServletException s) {
-                LOGGER.log(Level.SEVERE ,"Servlet Exception occured" ,s);
+                LOGGER.log(Level.SEVERE, "Servlet Exception occured", s);
             }
 
         }
@@ -123,7 +158,7 @@ public class UsersController extends HttpServlet {
     @Override
     protected void doPost(final HttpServletRequest req,
                           final HttpServletResponse resp) throws ServletException, IOException {
-        LOGGER.log(Level.FINE ,"POST");
+        LOGGER.log(Level.FINE, "POST");
         List<String> uri = parseUri(req.getRequestURI(), "users");
 
         if (uri.size() == 1) {
@@ -133,23 +168,23 @@ public class UsersController extends HttpServlet {
                 String passwordConfirm = req.getParameter("passwordconfirm");
                 String name = req.getParameter("name");
                 String firstname = req.getParameter("firstname");
-                final int LENGTH = 30;
-                if (password.equals(passwordConfirm) && !password.equals("")){
+                final int length = 30;
+                if (password.equals(passwordConfirm) && !password.equals("")) {
                     //Generate Salt (stored in DB)
-                    String salt = getSalt(LENGTH);
+                    String salt = getSalt(length);
                     String securedPassword = generateSecurePassword(password, salt);
 
                     if (account.createAccount(email, name, firstname,
                             securedPassword, salt) != null) {
-                        tryAndCatch(req ,resp ,"/users/login");
+                        tryAndCatch(req, resp, "/users/login");
 
                     } else {
-                        tryAndCatch(req ,resp ,"/users/signup");
+                        tryAndCatch(req, resp, "/users/signup");
 
                     }
 
                 } else {
-                    tryAndCatch(req ,resp ,"/users/signup");
+                    tryAndCatch(req, resp, "/users/signup");
 
                 }
 
@@ -160,16 +195,16 @@ public class UsersController extends HttpServlet {
                 Account user = account.getAccount(email);
 
                 if (user == null) {
-                    tryAndCatch(req ,resp ,"/users/login");
+                    tryAndCatch(req, resp, "/users/login");
 
                 } else {
                     //Check if matches
                     if (verifyUserPassword(password, user.getPassword(), user.getSalt())) {
                         req.getSession(true).setAttribute("user", user);
-                        tryAndCatch(req ,resp ,"/events");
+                        tryAndCatch(req, resp, "/events");
 
                     } else {
-                        tryAndCatch(req ,resp ,"/users/login");
+                        tryAndCatch(req, resp, "/users/login");
 
                     }
                 }
@@ -178,7 +213,7 @@ public class UsersController extends HttpServlet {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
                  } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+                    LOGGER.log(Level.SEVERE, "Exception occured", e);
                 }
 
             }
@@ -187,7 +222,7 @@ public class UsersController extends HttpServlet {
                 resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                 return;
              } catch (IOException e) {
-                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+                LOGGER.log(Level.SEVERE, "Exception occured", e);
             }
 
         }
