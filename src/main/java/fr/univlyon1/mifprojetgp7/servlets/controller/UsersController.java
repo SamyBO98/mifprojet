@@ -35,80 +35,85 @@ public class UsersController extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(UsersController.class.getName());
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(final ServletConfig config) throws ServletException {
         super.init(config);
         account = new AccountM((EntityManager) config.getServletContext().getAttribute("em"));
         interest = new InterestM((EntityManager) config.getServletContext().getAttribute("em"));
         event = new EventM((EntityManager) config.getServletContext().getAttribute("em"));
-        contributor = new ContributorM((EntityManager) config.getServletContext().getAttribute("em"));
+        contributor = new ContributorM((EntityManager) config
+                .getServletContext().getAttribute("em"));
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest req, final HttpServletResponse resp)
+            throws ServletException, IOException {
         String reqUri = req.getRequestURI();
         List<String> uri = parseUri(reqUri, "users");
         String page = null;
 
-        if (uri.size() == 1){
-            if (uri.get(0).equals("signup")){
+        if (uri.size() == 1) {
+            if (uri.get(0).equals("signup")) {
                 page = "WEB-INF/jsp/logs/signup.jsp";
                 req.setAttribute("page", page);
-            } else if (uri.get(0).equals("login")){
+            } else if (uri.get(0).equals("login")) {
                 page = "WEB-INF/jsp/logs/login.jsp";
                 req.setAttribute("page", page);
-            } else if (uri.get(0).equals("disconnect")){
+            } else if (uri.get(0).equals("disconnect")) {
                 req.getSession(true).invalidate();
                 try {
                     resp.sendRedirect("/" + sourceURI(reqUri));
                     return;
-                } catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured",e);
+                } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
                 }
 
-            } else if (uri.get(0).equals("profile")){
+            } else if (uri.get(0).equals("profile")) {
                 page = "users/user.jsp";
                 req.setAttribute("page", page);
-                List<Interest> interests = interest.getInterests((Account) req.getSession(true).getAttribute("user"));
+                List<Interest> interests = interest.getInterests((Account) req
+                        .getSession(true).getAttribute("user"));
                 req.setAttribute("interests", interests);
-                int countContribs = contributor.getContributors((Account) req.getSession(true).getAttribute("user")).size();
+                int countContribs = contributor.getContributors((Account) req.getSession(true)
+                        .getAttribute("user")).size();
                 req.setAttribute("countContribs", countContribs);
-                int countCreated = event.getEvent((Account) req.getSession(true).getAttribute("user")).size();
+                int countCreated = event.getEvent((Account) req.getSession(true)
+                        .getAttribute("user")).size();
                 req.setAttribute("countCreated", countCreated);
             } else {
-                try{
+                 try {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured",e);
+                 } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
                 }
 
             }
         } else {
-            try{
+             try {
                 resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                 return;
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured",e);
+             } catch (IOException e) {
+                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
             }
 
         }
 
-        if (req.getSession(true).getAttribute("user") == null){
-            try{
+        if (req.getSession(true).getAttribute("user") == null) {
+             try {
                 req.getRequestDispatcher("/index.jsp").include(req, resp);
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured",e);
-            } catch (ServletException s){
-                LOGGER.log(Level.SEVERE,"Servlet Exception occured",s);
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+            } catch (ServletException s) {
+                LOGGER.log(Level.SEVERE ,"Servlet Exception occured" ,s);
             }
 
         } else {
-            try{
+             try {
                 req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured",e);
-            } catch (ServletException s){
-                LOGGER.log(Level.SEVERE,"Servlet Exception occured",s);
+             } catch (IOException e) {
+                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
+            } catch (ServletException s) {
+                LOGGER.log(Level.SEVERE ,"Servlet Exception occured" ,s);
             }
 
         }
@@ -116,82 +121,85 @@ public class UsersController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOGGER.log(Level.FINE,"POST");
+    protected void doPost(final HttpServletRequest req,
+                          final HttpServletResponse resp) throws ServletException, IOException {
+        LOGGER.log(Level.FINE ,"POST");
         List<String> uri = parseUri(req.getRequestURI(), "users");
 
-        if (uri.size() == 1){
-            if (uri.get(0).equals("signup")){
+        if (uri.size() == 1) {
+            if (uri.get(0).equals("signup")) {
                 String email = req.getParameter("email");
                 String password = req.getParameter("password");
                 String passwordConfirm = req.getParameter("passwordconfirm");
                 String name = req.getParameter("name");
                 String firstname = req.getParameter("firstname");
-
+                final int LENGTH = 30;
                 if (password.equals(passwordConfirm) && !password.equals("")){
                     //Generate Salt (stored in DB)
-                    String salt = getSalt(30);
+                    String salt = getSalt(LENGTH);
                     String securedPassword = generateSecurePassword(password, salt);
 
-                    if (account.createAccount(email, name, firstname, securedPassword, salt) != null){
-                        tryAndCatch(req,resp,"/users/login");
+                    if (account.createAccount(email, name, firstname,
+                            securedPassword, salt) != null) {
+                        tryAndCatch(req ,resp ,"/users/login");
 
                     } else {
-                        tryAndCatch(req,resp,"/users/signup");
+                        tryAndCatch(req ,resp ,"/users/signup");
 
                     }
 
                 } else {
-                    tryAndCatch(req,resp,"/users/signup");
+                    tryAndCatch(req ,resp ,"/users/signup");
 
                 }
 
-            } else if (uri.get(0).equals("login")){
+            } else if (uri.get(0).equals("login")) {
                 String email = req.getParameter("email");
                 String password = req.getParameter("password");
 
                 Account user = account.getAccount(email);
 
-                if (user == null){
-                    tryAndCatch(req,resp,"/users/login");
+                if (user == null) {
+                    tryAndCatch(req ,resp ,"/users/login");
 
                 } else {
                     //Check if matches
-                    if (verifyUserPassword(password, user.getPassword(), user.getSalt())){
+                    if (verifyUserPassword(password, user.getPassword(), user.getSalt())) {
                         req.getSession(true).setAttribute("user", user);
-                        tryAndCatch(req,resp,"/events");
+                        tryAndCatch(req ,resp ,"/events");
 
                     } else {
-                        tryAndCatch(req,resp,"/users/login");
+                        tryAndCatch(req ,resp ,"/users/login");
 
                     }
                 }
             } else {
-                try{
+                 try {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured",e);
+                 } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
                 }
 
             }
         } else {
-            try{
+             try {
                 resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                 return;
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured",e);
+             } catch (IOException e) {
+                LOGGER.log(Level.SEVERE ,"Exception occured" ,e);
             }
 
         }
 
     }
-    private void tryAndCatch(HttpServletRequest req, HttpServletResponse resp, String lastParamRedirect){
-        try{
+    private void tryAndCatch(final HttpServletRequest req,
+                             final HttpServletResponse resp, final String lastParamRedirect) {
+         try {
             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect);
             return;
-        }catch (IOException e){
-            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Exception occured ", e);
         }
     }
 }

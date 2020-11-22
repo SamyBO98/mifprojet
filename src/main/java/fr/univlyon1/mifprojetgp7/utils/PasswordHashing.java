@@ -12,11 +12,12 @@ import java.util.Random;
 public class PasswordHashing {
 
     private static final Random RANDOM = new SecureRandom();
-    private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXY"
+            + "Zabcdefghijklmnopqrstuvwxyz";
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
 
-    public static String getSalt(int length) {
+    public static String getSalt(final int length) {
         StringBuilder returnValue = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
@@ -24,7 +25,7 @@ public class PasswordHashing {
         return new String(returnValue);
     }
 
-    public static byte[] hash(char[] password, byte[] salt) {
+    public static byte[] hash(final char[] password, final byte[] salt) {
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(password, Character.MIN_VALUE);
         try {
@@ -37,7 +38,7 @@ public class PasswordHashing {
         }
     }
 
-    public static String generateSecurePassword(String password, String salt) {
+    public static String generateSecurePassword(final String password, final String salt) {
         String returnValue = null;
         byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
 
@@ -46,9 +47,8 @@ public class PasswordHashing {
         return returnValue;
     }
 
-    public static boolean verifyUserPassword(String providedPassword,
-                                             String securedPassword, String salt)
-    {
+    public static boolean verifyUserPassword(final String providedPassword,
+                                             final String securedPassword, final String salt) {
         boolean returnValue = false;
 
         // Generate New secure password with the same salt
