@@ -72,6 +72,11 @@ public class Location {
         this.countryName = countryName;
     }
 
+    /**
+     * Test if the location is equal the the coordinates.
+     * @param o
+     * @return True if the location is equal to the coordinates or false if not
+     */
     public boolean equals(final Object o) {
         if (o instanceof Location) {
             return ((Location) o).getCoordinates().equals(coordinates);
@@ -79,6 +84,10 @@ public class Location {
         return false;
     }
 
+    /**
+     * Hashed coordinates.
+     * @return hashed coordinates
+     */
     public int hashCode() {
         return coordinates.hashCode();
     }

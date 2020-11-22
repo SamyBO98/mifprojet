@@ -11,13 +11,23 @@ public class InterestDAO {
 
     private final EntityManager em;
 
-    public InterestDAO(EntityManager em){
+    /**
+     * Constructor of InterestDAO.
+     * @param em
+     */
+    public InterestDAO(final EntityManager em) {
         this.em = em;
     }
 
-    public Interest addInterest(Category category, Account user){
+    /**
+     * Add interest.
+     * @param category
+     * @param user
+     * @return interest
+     */
+    public Interest addInterest(final Category category, final Account user) {
         Interest interest = new Interest();
-        if (category != null && user != null){
+        if (category != null && user != null) {
             interest.setCategory(category);
             interest.setUser(user);
             em.persist(interest);
@@ -26,31 +36,52 @@ public class InterestDAO {
         return null;
     }
 
-    public Interest getInterest(Category category, Account user){
-        List<Interest> interests = em.createQuery("SELECT i FROM Interest i WHERE i.category = ?1 AND i.user = ?2", Interest.class)
+    /**
+     * Get an Interest based on category and user.
+     * @param category
+     * @param user
+     * @return interest
+     */
+    public Interest getInterest(final Category category, final Account user) {
+        List<Interest> interests = em.createQuery("SELECT i FROM Interest i WHERE i.category = ?1 "
+                + "AND i.user = ?2", Interest.class)
                 .setParameter(1, category)
                 .setParameter(2, user)
                 .getResultList();
 
-        if (interests != null && interests.size() == 1){
+        if (interests != null && interests.size() == 1) {
             return interests.get(0);
         }
         return null;
     }
 
-    public List<Interest> getInterests(Category category){
+    /**
+     * Get a list of interests based on category.
+     * @param category
+     * @return list of interests
+     */
+    public List<Interest> getInterests(final Category category) {
         return em.createQuery("SELECT i FROM Interest i WHERE i.category = ?1", Interest.class)
                 .setParameter(1, category)
                 .getResultList();
     }
 
-    public List<Interest> getInterests(Account user){
+    /**
+     * Get a list of interests based on user.
+     * @param user
+     * @return list of interests
+     */
+    public List<Interest> getInterests(final Account user) {
         return em.createQuery("SELECT i FROM Interest i WHERE i.user = ?1", Interest.class)
                 .setParameter(1, user)
                 .getResultList();
     }
 
-    public void deleteInterest(Interest interest){
+    /**
+     * Delete an interest.
+     * @param interest
+     */
+    public void deleteInterest(final Interest interest) {
         em.remove(interest);
     }
 

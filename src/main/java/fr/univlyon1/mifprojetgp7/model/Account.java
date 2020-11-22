@@ -80,6 +80,11 @@ public class Account implements Serializable {
         this.coordinates = coordinates;
     }
 
+    /**
+     * Test if our email account is equal to email.
+     * @param o
+     * @return Boolean
+     */
     public boolean equals(final Object o) {
         if (o instanceof Account) {
             return ((Account) o).getEmailUser().equals(email);
@@ -87,6 +92,10 @@ public class Account implements Serializable {
         return false;
     }
 
+    /**
+     * Email hashed.
+     * @return email hashed
+     */
     public int hashCode() {
         return email.hashCode();
     }

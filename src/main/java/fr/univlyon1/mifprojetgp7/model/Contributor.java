@@ -38,6 +38,11 @@ public class Contributor {
         this.user = user;
     }
 
+    /**
+     * Test if user/event from contributor is equal to user/event.
+     * @param o
+     * @return Boolean
+     */
     public boolean equals(final Object o) {
         if (o instanceof Contributor) {
             boolean userB = ((Contributor) o).getUser().equals(user);
@@ -46,7 +51,10 @@ public class Contributor {
         }
         return false;
     }
-
+    /**
+     * Event hashed and user hashed.
+     * @return event hashed and user hashed
+     */
     public int hashCode() {
         int hash = 1;
         final int nb47 = 47;

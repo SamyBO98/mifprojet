@@ -11,38 +11,75 @@ public class EventDAO {
 
     private final EntityManager em;
 
-    public EventDAO(EntityManager em){
+    /**
+     * Constructor of EventDAO.
+     * @param em
+     */
+    public EventDAO(final EntityManager em) {
         this.em = em;
     }
 
-    public List<Event> getEvents(){
+    /**
+     * Get all events.
+     * @return List of events
+     */
+    public List<Event> getEvents() {
         return em.createQuery("SELECT e FROM Event e", Event.class).getResultList();
     }
 
-    public Event getEvent(int eventID){
+    /**
+     * Get a special Event.
+     * @param eventID
+     * @return event
+     */
+    public Event getEvent(final int eventID) {
         return em.find(Event.class, eventID);
 
     }
 
-    public List<Event> getEvent(String title){
+    /**
+     * Get a list of event.
+     * @param title
+     * @return List of event based on title
+     */
+    public List<Event> getEvent(final String title) {
         return em.createQuery("SELECT e FROM Event e WHERE e.title LIKE ?1", Event.class)
                 .setParameter(1, title)
                 .getResultList();
     }
 
-    public List<Event> getEvent(Category category){
+    /**
+     * Get a list of event.
+     * @param category
+     * @return List of event based on category
+     */
+    public List<Event> getEvent(final Category category) {
         return em.createQuery("SELECT e FROM Event e WHERE e.category = ?1", Event.class)
                 .setParameter(1, category)
                 .getResultList();
     }
 
-    public List<Event> getEvent(Account user){
+    /**
+     * Get a list of event.
+     * @param user
+     * @return List of event based on user
+     */
+    public List<Event> getEvent(final Account user) {
         return em.createQuery("SELECT e FROM Event e WHERE e.user = ?1", Event.class)
                 .setParameter(1, user)
                 .getResultList();
     }
 
-    public Event createEvent(String title, String contenu, Account user, Category category){
+    /**
+     * Create an event.
+     * @param title
+     * @param contenu
+     * @param user
+     * @param category
+     * @return event
+     */
+    public Event createEvent(final String title, final String contenu,
+                             final Account user, final Category category) {
         Event event = new Event();
         event.setTitle(title);
         event.setContent(contenu);
@@ -53,7 +90,11 @@ public class EventDAO {
         return event;
     }
 
-    public void deleteEvent(Event event){
+    /**
+     * Delete an event.
+     * @param event
+     */
+    public void deleteEvent(final Event event) {
         em.remove(event);
     }
 

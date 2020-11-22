@@ -8,20 +8,41 @@ public class AccountDAO {
 
     private final EntityManager em;
 
-    public AccountDAO(EntityManager em){
+    /**
+     * Constructor of AccountDAO.
+     * @param em
+     */
+    public AccountDAO(final EntityManager em) {
         this.em = em;
     }
 
-    public Account getAccount(final String email){
+    /**
+     * Account Getter.
+     * @param email
+     * @return account
+     */
+    public Account getAccount(final String email) {
         Account account = em.find(Account.class, email);
 
-        if (account == null){
+        if (account == null) {
             return null;
-        } else return account;
+        } else {
+            return account;
+        }
 
     }
 
-    public Account createAccount(final String email, final String name, final String firstName, final String password, final String salt){
+    /**
+     * Creation of an account.
+     * @param email
+     * @param name
+     * @param firstName
+     * @param password
+     * @param salt
+     * @return account
+     */
+    public Account createAccount(final String email, final String name,
+                                 final String firstName, final String password, final String salt) {
         if (em.find(Account.class, email) == null) {
             Account account = new Account();
             account.setEmailUser(email);

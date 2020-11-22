@@ -21,6 +21,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    /**
+     * Test if categoryName from category is equal to categoryName.
+     * @param o
+     * @return Boolean
+     */
     public boolean equals(final Object o) {
         if (o instanceof Category) {
             return ((Category) o).getCategoryName().equals(categoryName);
@@ -28,6 +33,10 @@ public class Category {
         return false;
     }
 
+    /**
+     * Category hashed.
+     * @return category hashed
+     */
     public int hashCode() {
         return categoryName.hashCode();
     }

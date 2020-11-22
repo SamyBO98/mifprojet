@@ -56,8 +56,7 @@ public class EventsController extends HttpServlet {
         String reqUri = req.getRequestURI();
         List<String> uri = parseUri(reqUri, "events");
         String page = null;
-        if (uri.isEmpty()) {
-            //Liste des évènements de catégories likés
+        if (uri.isEmpty()) { //Liste des évènements de catégories likés
             page = "events/events.jsp";
             req.setAttribute("page", page);
             List<Interest> interests = interest
@@ -69,14 +68,12 @@ public class EventsController extends HttpServlet {
             }
             req.setAttribute("events", events);
         } else if (uri.size() == 1) {
-            if (uri.get(0).equals("all")) {
-                //Liste de tout les évènements
+            if (uri.get(0).equals("all")) { //Liste de tout les évènements
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
                 List<Event> events = event.getEvents();
                 req.setAttribute("events", events);
-            } else if (uri.get(0).equals("create")) {
-                //Appel vers la création d'évènement
+            } else if (uri.get(0).equals("create")) { //Appel vers la création d'évènement
                 page = "events/createEvent.jsp";
                 req.setAttribute("page", page);
                 List<Category> categories = categorie.getCategories();
@@ -85,16 +82,14 @@ public class EventsController extends HttpServlet {
                 //Appel vers la page de recherche d'évènements filtré
                 page = "events/searchEvents.jsp";
                 req.setAttribute("page", page);
-            } else if (uri.get(0).equals("created")) {
-                //Liste des évènements crées
+            } else if (uri.get(0).equals("created")) { //Liste des évènements crées
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
                 List<Event> events = event
                         .getEvent((Account) req.getSession(true)
                                 .getAttribute("user"));
                 req.setAttribute("events", events);
-            } else if (uri.get(0).equals("participate")) {
-                //Liste des évènements ou on participe
+            } else if (uri.get(0).equals("participate")) { //Liste des évènements ou on participe
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
                 List<Contributor> contributors = contributor
@@ -108,12 +103,7 @@ public class EventsController extends HttpServlet {
                 try {
                     Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
                     if (ev == null) {
-                         try {
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                            return;
-                        } catch (IOException e) {
-                            LOGGER.log(Level.SEVERE, "Exception occured ", e);
-                        }
+                        sendRedirectAndReturn(req, resp, "/events");
                     } else {
                         page = "events/event.jsp";
                         req.setAttribute("page", page);
@@ -135,12 +125,7 @@ public class EventsController extends HttpServlet {
                     Account user = (Account) req.getSession(true).getAttribute("user");
                     Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
                     if (contributor.updateContributorToEvent(ev, user)) {
-                         try {
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI())
-                                    + "/events/" + uri.get(0));
-                        } catch (IOException e) {
-                            LOGGER.log(Level.SEVERE, "Exception occured ", e);
-                        }
+                        tryAndCatchRedirect(req, resp, "/events/", uri.get(0));
                     } else {
                         tryAndCatchRedirect(req, resp, "/events");
                     }
@@ -165,22 +150,12 @@ public class EventsController extends HttpServlet {
                     List<Contributor> contributors = contributor.getContributors(ev);
                     contributor.deleteContributors(contributors);
                     event.deleteEvent(ev);
-                     try {
-                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/created");
-                        return;
-                    } catch (IOException e) {
-                        LOGGER.log(Level.SEVERE, "Exception occured ", e);
-                    }
+                    sendRedirectAndReturn(req, resp, "/events/created");
                  } catch (NumberFormatException n) {
                     LOGGER.log(Level.SEVERE, "NumberFormatException occured ", n);
                 }
             } else {
-                 try {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    return;
-                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, "Exception occured ", e);
-                }
+                sendRedirectAndReturn(req, resp, "/events");
             }
         } else if (uri.size() == NB_3) {
             if (uri.get(0).equals("search")) {
@@ -194,12 +169,7 @@ public class EventsController extends HttpServlet {
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
             } else {
-                 try {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    return;
-                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, "Exception occured ", e);
-                }
+                sendRedirectAndReturn(req, resp, "/events");
             }
         } else if (uri.size() == NB_4) {
             if (uri.get(0).equals("search") && uri.get(1)
@@ -214,14 +184,10 @@ public class EventsController extends HttpServlet {
                 }
                 return;
             } else {
-                 try {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                    return;
-                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, "Exception occured ", e);
-                }
+                sendRedirectAndReturn(req, resp, "/events");
             }
         } else {
+            // Pareil
              try {
                 resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                 return;
@@ -233,6 +199,17 @@ public class EventsController extends HttpServlet {
             tryAndCatchRequest(req, resp, "/index.jsp");
         } else {
             tryAndCatchRequest(req, resp, "/WEB-INF/jsp/welcome.jsp");
+        }
+    }
+
+    private void sendRedirectAndReturn(final HttpServletRequest req,
+                                       final HttpServletResponse resp,
+                                       final String lastParam) {
+        try {
+            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParam);
+            return;
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Exception occured ", e);
         }
     }
 

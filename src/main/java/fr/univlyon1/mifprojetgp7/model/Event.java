@@ -84,6 +84,11 @@ public class Event {
         this.category = category;
     }
 
+    /**
+     * Test if id from event is equal to eventID.
+     * @param o
+     * @return Boolean
+     */
     public boolean equals(final Object o) {
         if (o instanceof Event) {
             return ((Event) o).getId() == eventID;
@@ -91,6 +96,10 @@ public class Event {
         return false;
     }
 
+    /**
+     * eventID, title,content,user,location,category hashed.
+     * @return eventID, title,content,user,location,category hashed
+     */
     public int hashCode() {
         int hash = 1;
         final int nb47 = 47;

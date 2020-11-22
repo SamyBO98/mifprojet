@@ -35,6 +35,11 @@ public final class ParseURI {
         return res;
     }
 
+    /**
+     * Split the URI by using the / .
+     * @param uri
+     * @return First argument of the splitted URI
+     */
     public static String sourceURI(final String uri) {
         List<String> temp = Arrays.asList(uri.split("/"));
 

@@ -21,6 +21,11 @@ public final class PasswordHashing {
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
 
+    /**
+     * Get the Salt.
+     * @param length
+     * @return String returnValue
+     */
     public static String getSalt(final int length) {
         StringBuilder returnValue = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
@@ -29,6 +34,12 @@ public final class PasswordHashing {
         return new String(returnValue);
     }
 
+    /**
+     * Method to hash the password.
+     * @param password
+     * @param salt
+     * @return Hashed Password
+     */
     public static byte[] hash(final char[] password, final byte[] salt) {
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(password, Character.MIN_VALUE);
@@ -42,6 +53,12 @@ public final class PasswordHashing {
         }
     }
 
+    /**
+     * Generate a hashed password.
+     * @param password
+     * @param salt
+     * @return returnValue
+     */
     public static String generateSecurePassword(final String password, final String salt) {
         String returnValue = null;
         byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
@@ -51,6 +68,13 @@ public final class PasswordHashing {
         return returnValue;
     }
 
+    /**
+     * Check if the two passwords are the same.
+     * @param providedPassword
+     * @param securedPassword
+     * @param salt
+     * @return returnValue
+     */
     public static boolean verifyUserPassword(final String providedPassword,
                                              final String securedPassword, final String salt) {
         boolean returnValue = false;

@@ -38,6 +38,11 @@ public class Interest {
         this.user = user;
     }
 
+    /**
+     * Test if user/category from interest is equal to user/category.
+     * @param o
+     * @return Boolean
+     */
     public boolean equals(final Object o) {
         if (o instanceof Interest) {
             boolean userB = ((Interest) o).getUser().equals(user);
@@ -47,6 +52,10 @@ public class Interest {
         return false;
     }
 
+    /**
+     * category,user hashed.
+     * @return category hashed and user hashed
+     */
     public int hashCode() {
         int hash = 1;
         final int nb47 = 47;

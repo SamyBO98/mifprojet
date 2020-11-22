@@ -11,16 +11,29 @@ public class CategoryM {
     private EntityManager em;
     private CategoryDAO category;
 
-    public CategoryM(EntityManager em){
+    /**
+     * Constructor of CategoryM.
+     * @param em
+     */
+    public CategoryM(final EntityManager em) {
         this.em = em;
         this.category = new CategoryDAO(this.em);
     }
 
-    public List<Category> getCategories(){
+    /**
+     * Get a list of categories.
+     * @return list of categories
+     */
+    public List<Category> getCategories() {
         return category.getCategories();
     }
 
-    public Category getCategory(String categoryName){
+    /**
+     * Get a category based on her name.
+     * @param categoryName
+     * @return category
+     */
+    public Category getCategory(final String categoryName) {
         return category.getCategory(categoryName);
     }
 
