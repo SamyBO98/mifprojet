@@ -1,6 +1,9 @@
-package fr.univlyon1.mifprojetgp7.model;
+package fr.univlyon1.mifprojetgp7.modelTest;
 
 import org.junit.Test;
+
+import fr.univlyon1.mifprojetgp7.model.Location;
+
 import static org.junit.Assert.assertEquals;
 
 public class LocationTest {

@@ -1,4 +1,4 @@
-package fr.univlyon1.mifprojetgp7.model;
+package fr.univlyon1.mifprojetgp7.modelTest;
 
 import fr.univlyon1.mifprojetgp7.model.Category;
 import org.junit.Test;
