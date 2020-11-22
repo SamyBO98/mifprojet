@@ -83,4 +83,7 @@ public class Account implements Serializable {
 	return false;
     }
 
+    public int hashCode() {
+	return email.hashCode();
+    }
 }

@@ -76,4 +76,8 @@ public class Location {
 	}
 	return false;
     }
+
+    public int hashCode() {
+	return coordinates.hashCode();
+    }
 }

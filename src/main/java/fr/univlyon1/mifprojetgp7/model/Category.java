@@ -28,4 +28,8 @@ public class Category {
 
 	return false;
     }
+
+    public int hashCode() {
+	return categoryName.hashCode();
+    }
 }

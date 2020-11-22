@@ -41,4 +41,11 @@ public class Contributor {
 	}
 	return false;
     }
+
+    public int hashCode() {
+	int hash = 1;
+	hash = hash * 47 + event.hashCode();
+	hash = hash * 26 + user.hashCode();
+	return hash;
+    }
 }

@@ -42,5 +42,12 @@ public class Interest {
 	return false;
     }
 
+    public int hashCode() {
+	int hash = 1;
+	hash = hash * 47 + category.hashCode();
+	hash = hash * 26 + user.hashCode();
+	return hash;
+    }
+
 }
 

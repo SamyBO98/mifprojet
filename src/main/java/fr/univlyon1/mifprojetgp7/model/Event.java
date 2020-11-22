@@ -86,4 +86,15 @@ public class Event {
 	return false;
     }
 
+    public int hashCode() {
+	int hash = 1;
+	hash = hash * 47 + eventID;
+	hash = hash * 26 + title.hashCode();
+	hash = hash * 64 + content.hashCode();
+	hash = hash * 41 + user.hashCode();
+	hash = hash * 22 + location.hashCode();
+	hash = hash * 15 + category.hashCode();
+	return hash;
+    }
+
 }
