@@ -24,7 +24,7 @@
                         <c:when test="${ ((status.count - 1 )  % 4 ) == 3 }">
                             </div>
                         </c:when>
-                        <c:when test="${ (status.count) == fn:length(requestScope.events)}">
+                        <c:when test="${ (status.count) == requestScope.events.size()}">
                             </div>
                         </c:when>
                     </c:choose>
