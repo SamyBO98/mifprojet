@@ -25,40 +25,47 @@ import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
 @WebServlet(name = "EventsController", urlPatterns = {"/events", "/events/*"})
 public class EventsController extends HttpServlet {
 
-    static EventM event;
-    static CategoryM categorie;
-    static ContributorM contributor;
-    static InterestM interest;
+    private static EventM event;
+    private static CategoryM categorie;
+    private static ContributorM contributor;
+    private static InterestM interest;
     private static final Logger LOGGER = Logger.getLogger(EventsController.class.getName());
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(final ServletConfig config) throws ServletException {
         super.init(config);
-        this.event = new EventM((EntityManager) config.getServletContext().getAttribute("em"));
-        this.categorie = new CategoryM((EntityManager) config.getServletContext().getAttribute("em"));
-        this.contributor = new ContributorM((EntityManager) config.getServletContext().getAttribute("em"));
-        this.interest = new InterestM((EntityManager) config.getServletContext().getAttribute("em"));
+        this.event = new EventM((EntityManager) config
+                .getServletContext().getAttribute("em"));
+        this.categorie = new CategoryM((EntityManager) config
+                .getServletContext().getAttribute("em"));
+        this.contributor = new ContributorM((EntityManager) config
+                .getServletContext().getAttribute("em"));
+        this.interest = new InterestM((EntityManager) config
+                .getServletContext().getAttribute("em"));
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest req,
+                         final HttpServletResponse resp) throws ServletException, IOException {
         String reqUri = req.getRequestURI();
         List<String> uri = parseUri(reqUri, "events");
         String page = null;
 
-        if (uri.isEmpty()){
+        if (uri.isEmpty()) {
             //Liste des évènements de catégories likés
             page = "events/events.jsp";
             req.setAttribute("page", page);
-            List<Interest> interests = interest.getInterests((Account) req.getSession(true).getAttribute("user"));
+            List<Interest> interests = interest
+                    .getInterests((Account) req.getSession(true)
+                            .getAttribute("user"));
             List<Event> events = new ArrayList<>();
-            for (Interest inte: interests){
+            for (Interest inte: interests) {
                 events.addAll(event.getEvent(inte.getCategory()));
             }
             req.setAttribute("events", events);
 
         } else if (uri.size() == 1) {
-            if (uri.get(0).equals("all")){
+            if (uri.get(0).equals("all")) {
                 //Liste de tout les évènements
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
@@ -80,69 +87,76 @@ public class EventsController extends HttpServlet {
                 //Liste des évènements crées
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
-                List<Event> events = event.getEvent((Account) req.getSession(true).getAttribute("user"));
+                List<Event> events = event
+                        .getEvent((Account) req.getSession(true)
+                                .getAttribute("user"));
                 req.setAttribute("events", events);
 
-            } else if (uri.get(0).equals("participate")){
+            } else if (uri.get(0).equals("participate")) {
                 //Liste des évènements ou on participe
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
-                List<Contributor> contributors = contributor.getContributors((Account) req.getSession(true).getAttribute("user"));
+                List<Contributor> contributors = contributor
+                        .getContributors((Account) req.getSession(true)
+                                .getAttribute("user"));
                 List<Event> events = event.getEvents(contributors);
                 req.setAttribute("events", events);
 
             } else {
-                //Appel vers un évènement unique (redirection vers /events si l'évènement n'existe pas)
+                //Appel vers un évènement unique
+                // (redirection vers /events si l'évènement n'existe pas)
                 try {
                     Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
 
-                    if (ev == null){
-                        try{
+                    if (ev == null) {
+                         try {
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                             return;
-                        } catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                        } catch (IOException e) {
+                            LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
                         }
 
                     } else {
                         page = "events/event.jsp";
                         req.setAttribute("page", page);
                         boolean liked;
-                        Contributor contrib = contributor.getContributor(ev, (Account) req.getSession(true).getAttribute("user"));
+                        Contributor contrib = contributor.getContributor(ev,
+                                (Account) req.getSession(true).getAttribute("user"));
                         liked = contrib != null;
                         req.setAttribute("joiners", contributor.getContributors(ev).size());
                         req.setAttribute("like", liked);
                         req.setAttribute("event", ev);
                     }
-                } catch (NumberFormatException n){
-                    LOGGER.log(Level.SEVERE,"NumberFormatException occured ",n);
+                } catch (NumberFormatException n) {
+                    LOGGER.log(Level.SEVERE ,"NumberFormatException occured " ,n);
                 }
 
             }
-        } else if (uri.size() == 2){
-            if (uri.get(1).equals("participate")){
-                try{
+        } else if (uri.size() == 2) {
+            if (uri.get(1).equals("participate")) {
+                 try {
                     Account user = (Account) req.getSession(true).getAttribute("user");
                     Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
-                    if (contributor.updateContributorToEvent(ev, user)){
-                        try{
-                            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/" + uri.get(0));
-                        } catch (IOException e){
-                            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                    if (contributor.updateContributorToEvent(ev, user)) {
+                         try {
+                            resp.sendRedirect("/" + sourceURI(req.getRequestURI())
+                                    + "/events/" + uri.get(0));
+                        } catch (IOException e) {
+                            LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
                         }
 
                     }
                     else {
-                        tryAndCatchRedirect(req,resp,"/events");
+                        tryAndCatchRedirect(req ,resp ,"/events");
 
                     }
                     return;
-                }catch (NumberFormatException n){
-                    LOGGER.log(Level.SEVERE,"NumberFormatException occured ",n);
+                 } catch (NumberFormatException n) {
+                    LOGGER.log(Level.SEVERE ,"NumberFormatException occured " ,n);
                 }
 
-            } else if (uri.get(0).equals("search")){
-                if (uri.get(1).equals("title")){
+            } else if (uri.get(0).equals("search")) {
+                if (uri.get(1).equals("title")) {
                     page = "events/searchEvents.jsp";
                     String filter = "title";
                     req.setAttribute("filter", filter);
@@ -154,35 +168,35 @@ public class EventsController extends HttpServlet {
 
                 }
                 req.setAttribute("page", page);
-            } else if (uri.get(1).equals("delete")){
-                try{
+            } else if (uri.get(1).equals("delete")) {
+                 try {
                     Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
                     List<Contributor> contributors = contributor.getContributors(ev);
                     contributor.deleteContributors(contributors);
                     event.deleteEvent(ev);
-                    try{
+                     try {
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/created");
                         return;
-                    } catch (IOException e){
-                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                    } catch (IOException e) {
+                        LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
                     }
-                }catch (NumberFormatException n){
-                    LOGGER.log(Level.SEVERE,"NumberFormatException occured ",n);
+                 } catch (NumberFormatException n) {
+                    LOGGER.log(Level.SEVERE ,"NumberFormatException occured " ,n);
                 }
             } else {
-                try{
+                 try {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                 } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
                 }
 
             }
 
-        } else if (uri.size() == 3){
-            if (uri.get(0).equals("search")){
+        } else if (uri.size() == 3) {
+            if (uri.get(0).equals("search")) {
                 List<Event> events;
-                if (uri.get(1).equals("title")){
+                if (uri.get(1).equals("title")) {
                     events = event.getEvent(uri.get(2));
                 } else {
                     events = event.getEvent(categorie.getCategory(uri.get(2)));
@@ -191,128 +205,136 @@ public class EventsController extends HttpServlet {
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
             } else {
-                try{
+                 try {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                 } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
                 }
 
             }
-        } else if (uri.size() == 4){
-            if (uri.get(0).equals("search") && uri.get(1).equals("category") && uri.get(3).equals("react")){
+        } else if (uri.size() == 4) {
+            if (uri.get(0).equals("search") && uri.get(1)
+                    .equals("category") && uri.get(3).equals("react")) {
                 Category category = categorie.getCategory(uri.get(2));
-                boolean update = interest.updateInterest(category, (Account) req.getSession(true).getAttribute("user"));
-                if (update){
-                    tryAndCatchRedirect(req,resp,"/events/search/categories");
+                boolean update = interest.updateInterest(category,
+                        (Account) req.getSession(true).getAttribute("user"));
+                if (update) {
+                    tryAndCatchRedirect(req ,resp ,"/events/search/categories");
 
                 } else {
-                    tryAndCatchRedirect(req,resp,"/events");
+                    tryAndCatchRedirect(req ,resp, "/events");
 
                 }
                 return;
             } else {
-                try{
+                 try {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
-                }catch (IOException e){
-                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                 } catch (IOException e) {
+                    LOGGER.log(Level.SEVERE, "Exception occured ", e);
                 }
 
             }
         } else {
-            try{
+             try {
                 resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                 return;
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE,"Exception occured ",e);
+             } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Exception occured ", e);
             }
 
         }
 
-        if (req.getSession(true).getAttribute("user") == null){
-            tryAndCatchRequest(req,resp,"/index.jsp");
+        if (req.getSession(true).getAttribute("user") == null) {
+            tryAndCatchRequest(req, resp, "/index.jsp");
 
         } else {
-            tryAndCatchRequest(req,resp,"/WEB-INF/jsp/welcome.jsp");
+            tryAndCatchRequest(req, resp, "/WEB-INF/jsp/welcome.jsp");
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(final HttpServletRequest req,
+                          final HttpServletResponse resp) throws ServletException, IOException {
         String reqUri = req.getRequestURI();
         List<String> uri = parseUri(reqUri, "events");
 
-        if (uri.size() == 1){
-            if (uri.get(0).equals("create")){
+        if (uri.size() == 1) {
+            if (uri.get(0).equals("create")) {
                 String title = req.getParameter("title");
                 String contenu = req.getParameter("contenu");
                 String categoryName = req.getParameter("category");
 
                 Category cat = categorie.getCategory(categoryName);
 
-                if (cat != null){
+                if (cat != null) {
                     Account user = (Account) req.getSession(true).getAttribute("user");
-                    if (event.createEvent(title, contenu, user, cat) != null){
+                    if (event.createEvent(title, contenu, user, cat) != null) {
                         //
-                        tryAndCatchRedirect(req,resp,"/events/created");
+                        tryAndCatchRedirect(req, resp, "/events/created");
 
                     } else {
                         //
-                        tryAndCatchRedirect(req,resp,"/events/create");
+                        tryAndCatchRedirect(req, resp, "/events/create");
 
                     }
                 } else {
                     //
-                    tryAndCatchRedirect(req,resp,"/events/create");
+                    tryAndCatchRedirect(req, resp, "/events/create");
 
                 }
             } else {
                 //
-                tryAndCatchRedirect(req,resp,"/events");
+                tryAndCatchRedirect(req, resp, "/events");
 
             }
-        } else if (uri.size() == 2){
-            if (uri.get(0).equals("search") && uri.get(1).equals("title")){
+        } else if (uri.size() == 2) {
+            if (uri.get(0).equals("search") && uri.get(1).equals("title")) {
                 String textFilter = req.getParameter("text-filter");
-                tryAndCatchRedirect(req,resp,"/events/search/title/",textFilter);
+                tryAndCatchRedirect(req, resp, "/events/search/title/", textFilter);
 
 
             } else {
-                tryAndCatchRedirect(req,resp,"/events");
+                tryAndCatchRedirect(req, resp, "/events");
 
             }
         } else {
-            tryAndCatchRedirect(req,resp,"/events");
+            tryAndCatchRedirect(req, resp, "/events");
 
         }
     }
 
-    private void tryAndCatchRedirect(HttpServletRequest req, HttpServletResponse resp, String lastParamRedirect){
-        try{
+    private void tryAndCatchRedirect(final HttpServletRequest req,
+                                     final HttpServletResponse resp,
+                                     final String lastParamRedirect) {
+         try {
             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect);
             return;
-        }catch (IOException e){
-            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Exception occured ", e);
         }
     }
 
-    private void tryAndCatchRedirect(HttpServletRequest req, HttpServletResponse resp, String lastParamRedirect, String textFilter){
-        try{
-            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect + textFilter);
+    private void tryAndCatchRedirect(final HttpServletRequest req, final HttpServletResponse resp,
+                                     final String lastParamRedirect, final String textFilter) {
+         try {
+            resp.sendRedirect("/" + sourceURI(req.getRequestURI())
+                    + lastParamRedirect + textFilter);
             return;
-        }catch (IOException e){
-            LOGGER.log(Level.SEVERE,"Exception occured ",e);
+         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Exception occured ", e);
         }
     }
 
-    private void tryAndCatchRequest(HttpServletRequest req, HttpServletResponse resp, String param){
-        try{
+    private void tryAndCatchRequest(final HttpServletRequest req,
+                                    final HttpServletResponse resp, final String param) {
+         try {
             req.getRequestDispatcher(param).include(req, resp);
-        }catch (IOException e){
-            LOGGER.log(Level.SEVERE,"Exception occured " ,e);
+         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Exception occured ", e);
          } catch (ServletException s) {
-            LOGGER.log(Level.SEVERE ,"Servlet Exception occured " ,s);
+            LOGGER.log(Level.SEVERE, "Servlet Exception occured ", s);
         }
     }
 
