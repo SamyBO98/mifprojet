@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import fr.univlyon1.mifprojetgp7.metier.AccountM;
 import fr.univlyon1.mifprojetgp7.metier.CategoryM;
+import fr.univlyon1.mifprojetgp7.metier.ContributorM;
 import fr.univlyon1.mifprojetgp7.metier.EventM;
 import fr.univlyon1.mifprojetgp7.model.Account;
 import fr.univlyon1.mifprojetgp7.model.Category;
@@ -71,7 +72,11 @@ public class EventMTest {
     public void deleteEvent() {
 	EventM eventM = new EventM(em);
 	List<Event> eventList = eventM.getEvent(userTest);
+	ContributorM c = new ContributorM(em);
 	for(Event e : eventList) {
+	    if(c.getContributors(e).size() != 0) {
+		c.deleteContributors(c.getContributors(e));
+	    }
 	    eventM.deleteEvent(e);
 	    assertEquals(null, eventM.getEvent(e.getId()));
 	}
