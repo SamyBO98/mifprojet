@@ -174,8 +174,13 @@ public class EventsController extends HttpServlet {
                     LOGGER.log(Level.SEVERE,"NumberFormatException occured ",n);
                 }
             } else {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    return;
+                }catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                }
+
             }
 
         } else if (uri.size() == 3){
@@ -190,26 +195,51 @@ public class EventsController extends HttpServlet {
                 page = "events/events.jsp";
                 req.setAttribute("page", page);
             } else {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    return;
+                }catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                }
+
             }
         } else if (uri.size() == 4){
             if (uri.get(0).equals("search") && uri.get(1).equals("category") && uri.get(3).equals("react")){
                 Category category = categorie.getCategory(uri.get(2));
                 boolean update = interest.updateInterest(category, (Account) req.getSession(true).getAttribute("user"));
                 if (update){
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/categories");
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/search/categories");
+                    }catch (IOException e){
+                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                    }
+
                 } else {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    try{
+                        resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    }catch (IOException e){
+                        LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                    }
+
                 }
                 return;
             } else {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    return;
+                }catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                }
+
             }
         } else {
-            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-            return;
+            try{
+                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                return;
+            }catch (IOException e){
+                LOGGER.log(Level.SEVERE,"Exception occured ",e);
+            }
+
         }
 
         if (req.getSession(true).getAttribute("user") == null){
@@ -272,8 +302,13 @@ public class EventsController extends HttpServlet {
 
                 }
             } else {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    return;
+                }catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                }
+
             }
         } else if (uri.size() == 2){
             if (uri.get(0).equals("search") && uri.get(1).equals("title")){
@@ -286,12 +321,22 @@ public class EventsController extends HttpServlet {
 
 
             } else {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    return;
+                }catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured ",e);
+                }
+
             }
         } else {
-            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-            return;
+            try{
+                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                return;
+            }catch (IOException e){
+                LOGGER.log(Level.SEVERE,"Exception occured ",e);
+            }
+
         }
     }
 
