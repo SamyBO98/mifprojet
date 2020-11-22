@@ -18,15 +18,17 @@ public class Location {
     private String countryName;
     private String categoryName;
 
-    public String getCategoryName() { return categoryName; }
+    public String getCategoryName() {
+        return categoryName; }
 
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public void setCategoryName(final String categoryName) {
+        this.categoryName = categoryName; }
 
     public String getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(String coordinates) {
+    public void setCoordinates(final String coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -34,7 +36,7 @@ public class Location {
         return roadName;
     }
 
-    public void setRoadName(String roadName) {
+    public void setRoadName(final String roadName) {
         this.roadName = roadName;
     }
 
@@ -42,7 +44,7 @@ public class Location {
         return complement;
     }
 
-    public void setComplement(String complement) {
+    public void setComplement(final String complement) {
         this.complement = complement;
     }
 
@@ -50,7 +52,7 @@ public class Location {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(final int postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -58,7 +60,7 @@ public class Location {
         return cityName;
     }
 
-    public void setCityName(String cityName) {
+    public void setCityName(final String cityName) {
         this.cityName = cityName;
     }
 
@@ -66,18 +68,18 @@ public class Location {
         return countryName;
     }
 
-    public void setCountryName(String countryName) {
+    public void setCountryName(final String countryName) {
         this.countryName = countryName;
     }
 
-    public boolean equals(Object o) {
-	if (o instanceof Location) {
-	    return ((Location) o).getCoordinates().equals(coordinates);
-	}
-	return false;
+    public boolean equals(final Object o) {
+        if (o instanceof Location) {
+            return ((Location) o).getCoordinates().equals(coordinates);
+        }
+        return false;
     }
 
     public int hashCode() {
-	return coordinates.hashCode();
+        return coordinates.hashCode();
     }
 }

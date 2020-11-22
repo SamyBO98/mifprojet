@@ -1,6 +1,11 @@
 package fr.univlyon1.mifprojetgp7.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Table(name = "Event")
@@ -30,71 +35,77 @@ public class Event {
     private Category category;
 
 
-    public int getId(){
+    public int getId() {
         return this.eventID;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return this.title;
     }
 
-    public String getContent(){
+    public String getContent() {
         return this.content;
     }
 
-    public Account getAccount(){
+    public Account getAccount() {
         return this.user;
     }
 
-    public Location getLocation(){
+    public Location getLocation() {
         return this.location;
     }
 
-    public Category getCategory(){
+    public Category getCategory() {
         return this.category;
     }
 
 
-    public void setEventID(int eventID){
+    public void setEventID(final int eventID) {
         this.eventID = eventID;
     }
 
-    public void setTitle(String title){
+    public void setTitle(final String title) {
         this.title = title;
     }
 
-    public void setContent(String content){
+    public void setContent(final String content) {
         this.content = content;
     }
 
-    public void setUser(Account user) {
+    public void setUser(final Account user) {
         this.user = user;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(final Location location) {
         this.location = location;
     }
 
-    public void setCategory(Category category){
+    public void setCategory(final Category category) {
         this.category = category;
     }
 
-    public boolean equals(Object o) {
-	if (o instanceof Event) {
-	    return ((Event) o).getId() == eventID;
-	}
-	return false;
+    public boolean equals(final Object o) {
+        if (o instanceof Event) {
+            return ((Event) o).getId() == eventID;
+        }
+        return false;
     }
 
     public int hashCode() {
-	int hash = 1;
-	hash = hash * 47 + eventID;
-	hash = hash * 26 + title.hashCode();
-	hash = hash * 64 + content.hashCode();
-	hash = hash * 41 + user.hashCode();
-	hash = hash * 22 + location.hashCode();
-	hash = hash * 15 + category.hashCode();
-	return hash;
+        int hash = 1;
+        final int nb47 = 47;
+        final int nb26 = 26;
+        final int nb64 = 64;
+        final int nb41 = 41;
+        final int nb22 = 22;
+        final int nb15 = 15;
+        hash = hash * nb47 + eventID;
+        hash = hash * nb26 + title.hashCode();
+        hash = hash * nb64 + content.hashCode();
+        hash = hash * nb41 + user.hashCode();
+        hash = hash * nb22 + location.hashCode();
+        hash = hash * nb15 + category.hashCode();
+        return hash;
     }
 
 }

@@ -1,6 +1,10 @@
 package fr.univlyon1.mifprojetgp7.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Entity
@@ -43,47 +47,47 @@ public class Account implements Serializable {
         return this.password;
     }
 
-    public String getSalt(){
+    public String getSalt() {
         return this.salt;
     }
 
-    public Location getCoordinates(){
+    public Location getCoordinates() {
         return this.coordinates;
     }
 
 
-    public void setEmailUser(String email) {
+    public void setEmailUser(final String email) {
         this.email = email;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
-    public void setSalt(String salt){
+    public void setSalt(final String salt) {
         this.salt = salt;
     }
 
-    public void setCoordinates(Location coordinates){
+    public void setCoordinates(final Location coordinates) {
         this.coordinates = coordinates;
     }
 
-    public boolean equals(Object o) {
-	if (o instanceof Account) {
-	    return ((Account) o).getEmailUser().equals(email);
-	}
-	return false;
+    public boolean equals(final Object o) {
+        if (o instanceof Account) {
+            return ((Account) o).getEmailUser().equals(email);
+        }
+        return false;
     }
 
     public int hashCode() {
-	return email.hashCode();
+        return email.hashCode();
     }
 }

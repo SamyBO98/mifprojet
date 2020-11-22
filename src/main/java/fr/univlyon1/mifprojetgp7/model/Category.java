@@ -13,23 +13,22 @@ public class Category {
     @JoinColumn(name = "categoryName")
     private String categoryName;
 
-    public String getCategoryName(){
+    public String getCategoryName() {
         return this.categoryName;
     }
-    
-    public void setCategoryName(String categoryName){
+
+    public void setCategoryName(final String categoryName) {
         this.categoryName = categoryName;
     }
 
-    public boolean equals(Object o) {
-	if (o instanceof Category) {
-	    return ((Category) o).getCategoryName().equals(categoryName);
-	}
-
-	return false;
+    public boolean equals(final Object o) {
+        if (o instanceof Category) {
+            return ((Category) o).getCategoryName().equals(categoryName);
+        }
+        return false;
     }
 
     public int hashCode() {
-	return categoryName.hashCode();
+        return categoryName.hashCode();
     }
 }

@@ -13,15 +13,15 @@ public class InterestM {
     private EntityManager em;
     private InterestDAO interest;
 
-    public InterestM(EntityManager em){
+    public InterestM(final EntityManager em) {
         this.em = em;
         this.interest = new InterestDAO(this.em);
     }
 
-    public boolean updateInterest(Category category, Account user){
+    public boolean updateInterest(final Category category, final Account user) {
         Interest inter = interest.getInterest(category, user);
         em.getTransaction().begin();
-        if (inter == null){
+        if (inter == null) {
             Interest inte = interest.addInterest(category, user);
             em.getTransaction().commit();
             return inte != null;
@@ -32,15 +32,15 @@ public class InterestM {
         }
     }
 
-    public Interest getInterest(Category category, Account user){
+    public Interest getInterest(final Category category, final Account user) {
         return interest.getInterest(category, user);
     }
 
-    public List<Interest> getInterests(Category category){
+    public List<Interest> getInterests(final Category category) {
         return interest.getInterests(category);
     }
 
-    public List<Interest> getInterests(Account user){
+    public List<Interest> getInterests(final Account user) {
         return interest.getInterests(user);
     }
 

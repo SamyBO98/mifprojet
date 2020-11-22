@@ -4,7 +4,11 @@ import fr.univlyon1.mifprojetgp7.metier.CategoryM;
 import fr.univlyon1.mifprojetgp7.metier.ContributorM;
 import fr.univlyon1.mifprojetgp7.metier.EventM;
 import fr.univlyon1.mifprojetgp7.metier.InterestM;
-import fr.univlyon1.mifprojetgp7.model.*;
+import fr.univlyon1.mifprojetgp7.model.Account;
+import fr.univlyon1.mifprojetgp7.model.Interest;
+import fr.univlyon1.mifprojetgp7.model.Event;
+import fr.univlyon1.mifprojetgp7.model.Category;
+import fr.univlyon1.mifprojetgp7.model.Contributor;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletConfig;
@@ -30,6 +34,8 @@ public class EventsController extends HttpServlet {
     private static ContributorM contributor;
     private static InterestM interest;
     private static final Logger LOGGER = Logger.getLogger(EventsController.class.getName());
+    private static final int NB_3 = 3;
+    private static final int NB_4 = 4;
 
     @Override
     public void init(final ServletConfig config) throws ServletException {
@@ -50,7 +56,6 @@ public class EventsController extends HttpServlet {
         String reqUri = req.getRequestURI();
         List<String> uri = parseUri(reqUri, "events");
         String page = null;
-
         if (uri.isEmpty()) {
             //Liste des évènements de catégories likés
             page = "events/events.jsp";
@@ -63,7 +68,6 @@ public class EventsController extends HttpServlet {
                 events.addAll(event.getEvent(inte.getCategory()));
             }
             req.setAttribute("events", events);
-
         } else if (uri.size() == 1) {
             if (uri.get(0).equals("all")) {
                 //Liste de tout les évènements
@@ -77,12 +81,10 @@ public class EventsController extends HttpServlet {
                 req.setAttribute("page", page);
                 List<Category> categories = categorie.getCategories();
                 req.setAttribute("categories", categories);
-
             } else if (uri.get(0).equals("search")) {
                 //Appel vers la page de recherche d'évènements filtré
                 page = "events/searchEvents.jsp";
                 req.setAttribute("page", page);
-
             } else if (uri.get(0).equals("created")) {
                 //Liste des évènements crées
                 page = "events/events.jsp";
@@ -91,7 +93,6 @@ public class EventsController extends HttpServlet {
                         .getEvent((Account) req.getSession(true)
                                 .getAttribute("user"));
                 req.setAttribute("events", events);
-
             } else if (uri.get(0).equals("participate")) {
                 //Liste des évènements ou on participe
                 page = "events/events.jsp";
@@ -101,21 +102,18 @@ public class EventsController extends HttpServlet {
                                 .getAttribute("user"));
                 List<Event> events = event.getEvents(contributors);
                 req.setAttribute("events", events);
-
             } else {
                 //Appel vers un évènement unique
                 // (redirection vers /events si l'évènement n'existe pas)
                 try {
                     Event ev = event.getEvent(Integer.parseInt(uri.get(0)));
-
                     if (ev == null) {
                          try {
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                             return;
                         } catch (IOException e) {
-                            LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
+                            LOGGER.log(Level.SEVERE, "Exception occured ", e);
                         }
-
                     } else {
                         page = "events/event.jsp";
                         req.setAttribute("page", page);
@@ -128,9 +126,8 @@ public class EventsController extends HttpServlet {
                         req.setAttribute("event", ev);
                     }
                 } catch (NumberFormatException n) {
-                    LOGGER.log(Level.SEVERE ,"NumberFormatException occured " ,n);
+                    LOGGER.log(Level.SEVERE, "NumberFormatException occured ", n);
                 }
-
             }
         } else if (uri.size() == 2) {
             if (uri.get(1).equals("participate")) {
@@ -142,30 +139,24 @@ public class EventsController extends HttpServlet {
                             resp.sendRedirect("/" + sourceURI(req.getRequestURI())
                                     + "/events/" + uri.get(0));
                         } catch (IOException e) {
-                            LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
+                            LOGGER.log(Level.SEVERE, "Exception occured ", e);
                         }
-
-                    }
-                    else {
-                        tryAndCatchRedirect(req ,resp ,"/events");
-
+                    } else {
+                        tryAndCatchRedirect(req, resp, "/events");
                     }
                     return;
                  } catch (NumberFormatException n) {
-                    LOGGER.log(Level.SEVERE ,"NumberFormatException occured " ,n);
+                    LOGGER.log(Level.SEVERE, "NumberFormatException occured ", n);
                 }
-
             } else if (uri.get(0).equals("search")) {
                 if (uri.get(1).equals("title")) {
                     page = "events/searchEvents.jsp";
                     String filter = "title";
                     req.setAttribute("filter", filter);
-
                 } else {
                     page = "categories/categories.jsp";
                     List<Category> categories = categorie.getCategories();
                     req.setAttribute("categories", categories);
-
                 }
                 req.setAttribute("page", page);
             } else if (uri.get(1).equals("delete")) {
@@ -178,22 +169,20 @@ public class EventsController extends HttpServlet {
                         resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events/created");
                         return;
                     } catch (IOException e) {
-                        LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
+                        LOGGER.log(Level.SEVERE, "Exception occured ", e);
                     }
                  } catch (NumberFormatException n) {
-                    LOGGER.log(Level.SEVERE ,"NumberFormatException occured " ,n);
+                    LOGGER.log(Level.SEVERE, "NumberFormatException occured ", n);
                 }
             } else {
                  try {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
                  } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
+                    LOGGER.log(Level.SEVERE, "Exception occured ", e);
                 }
-
             }
-
-        } else if (uri.size() == 3) {
+        } else if (uri.size() == NB_3) {
             if (uri.get(0).equals("search")) {
                 List<Event> events;
                 if (uri.get(1).equals("title")) {
@@ -209,22 +198,19 @@ public class EventsController extends HttpServlet {
                     resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
                     return;
                  } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE ,"Exception occured " ,e);
+                    LOGGER.log(Level.SEVERE, "Exception occured ", e);
                 }
-
             }
-        } else if (uri.size() == 4) {
+        } else if (uri.size() == NB_4) {
             if (uri.get(0).equals("search") && uri.get(1)
-                    .equals("category") && uri.get(3).equals("react")) {
+                    .equals("category") && uri.get(NB_3).equals("react")) {
                 Category category = categorie.getCategory(uri.get(2));
                 boolean update = interest.updateInterest(category,
                         (Account) req.getSession(true).getAttribute("user"));
                 if (update) {
-                    tryAndCatchRedirect(req ,resp ,"/events/search/categories");
-
+                    tryAndCatchRedirect(req, resp, "/events/search/categories");
                 } else {
-                    tryAndCatchRedirect(req ,resp, "/events");
-
+                    tryAndCatchRedirect(req, resp, "/events");
                 }
                 return;
             } else {
@@ -234,7 +220,6 @@ public class EventsController extends HttpServlet {
                  } catch (IOException e) {
                     LOGGER.log(Level.SEVERE, "Exception occured ", e);
                 }
-
             }
         } else {
              try {
@@ -243,12 +228,9 @@ public class EventsController extends HttpServlet {
              } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "Exception occured ", e);
             }
-
         }
-
         if (req.getSession(true).getAttribute("user") == null) {
             tryAndCatchRequest(req, resp, "/index.jsp");
-
         } else {
             tryAndCatchRequest(req, resp, "/WEB-INF/jsp/welcome.jsp");
         }
