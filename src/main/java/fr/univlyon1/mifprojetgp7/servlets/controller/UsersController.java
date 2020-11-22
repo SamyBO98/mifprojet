@@ -74,7 +74,13 @@ public class UsersController extends HttpServlet {
                 req.setAttribute("countContribs", countContribs);
                 int countCreated = event.getEvent((Account) req.getSession(true).getAttribute("user")).size();
                 req.setAttribute("countCreated", countCreated);
+            } else {
+                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                return;
             }
+        } else {
+            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+            return;
         }
 
         if (req.getSession(true).getAttribute("user") == null){
@@ -174,7 +180,13 @@ public class UsersController extends HttpServlet {
 
                     }
                 }
+            } else {
+                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                return;
             }
+        } else {
+            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+            return;
         }
 
     }
