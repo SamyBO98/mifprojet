@@ -7,7 +7,7 @@ import java.util.Base64;
 
 import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.hash;
 import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.verifyUserPassword;
-
+import static org.junit.Assert.*;
 
 public class PasswordHashTest {
 
@@ -19,6 +19,7 @@ public class PasswordHashTest {
         byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
         String returnValue = Base64.getEncoder().encodeToString(securePassword);
         boolean test = verifyUserPassword("password", returnValue, "salt");
+        assertTrue(test);
     }
 
 }
