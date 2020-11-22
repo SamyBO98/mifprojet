@@ -1,5 +1,6 @@
 <%@ page import="fr.univlyon1.mifprojetgp7.utils.ParseURI" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
  <div class="container-fluid">
     <c:choose>
         <c:when test="${ requestScope.categories.size() == 0 }">
