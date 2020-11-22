@@ -33,5 +33,14 @@ public class Interest {
         this.user = user;
     }
 
+    public boolean equals(Object o) {
+	if (o instanceof Interest) {
+	    boolean userB = ((Interest) o).getUser().equals(user);
+	    boolean categoryB = ((Interest) o).getCategory().equals(category);
+	    return userB && categoryB;
+	}
+	return false;
+    }
+
 }
 

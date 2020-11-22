@@ -79,4 +79,11 @@ public class Event {
         this.category = category;
     }
 
+    public boolean equals(Object o) {
+	if (o instanceof Event) {
+	    return ((Event) o).getId() == eventID;
+	}
+	return false;
+    }
+
 }

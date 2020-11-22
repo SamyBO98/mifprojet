@@ -76,4 +76,11 @@ public class Account implements Serializable {
         this.coordinates = coordinates;
     }
 
+    public boolean equals(Object o) {
+	if (o instanceof Account) {
+	    return ((Account) o).getEmailUser().equals(email);
+	}
+	return false;
+    }
+
 }
