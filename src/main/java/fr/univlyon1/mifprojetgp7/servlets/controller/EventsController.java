@@ -255,7 +255,7 @@ public class EventsController extends HttpServlet {
                     Account user = (Account) req.getSession(true).getAttribute("user");
                     if (event.createEvent(title, contenu, user, cat) != null){
                         //
-                        tryAndCatchRedirect(req,resp,"/events");
+                        tryAndCatchRedirect(req,resp,"/events/created");
 
                     } else {
                         //
