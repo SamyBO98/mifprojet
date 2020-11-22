@@ -75,12 +75,22 @@ public class UsersController extends HttpServlet {
                 int countCreated = event.getEvent((Account) req.getSession(true).getAttribute("user")).size();
                 req.setAttribute("countCreated", countCreated);
             } else {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    return;
+                }catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured",e);
+                }
+
             }
         } else {
-            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-            return;
+            try{
+                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                return;
+            }catch (IOException e){
+                LOGGER.log(Level.SEVERE,"Exception occured",e);
+            }
+
         }
 
         if (req.getSession(true).getAttribute("user") == null){
@@ -181,12 +191,22 @@ public class UsersController extends HttpServlet {
                     }
                 }
             } else {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-                return;
+                try{
+                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                    return;
+                }catch (IOException e){
+                    LOGGER.log(Level.SEVERE,"Exception occured",e);
+                }
+
             }
         } else {
-            resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
-            return;
+            try{
+                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + "/events");
+                return;
+            }catch (IOException e){
+                LOGGER.log(Level.SEVERE,"Exception occured",e);
+            }
+
         }
 
     }
