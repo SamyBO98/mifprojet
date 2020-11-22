@@ -15,4 +15,6 @@
         <jsp:include page="${ requestScope.page }"/>
     </c:if>
 </body>
+
+<jsp:include page="footer.jsp" />
 </html>

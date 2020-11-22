@@ -13,12 +13,12 @@
     <h2>For the moment, nothing to show you...</h2>
     <h2>But don't worry, this project is in progress!</h2>
 
-    <h3>
-        Your informations <br/>
-        Your email: <%= ((Account)session.getAttribute("user")).getEmailUser() %><br/>
-        Your first name: <%= ((Account)session.getAttribute("user")).getName() %><br/>
-        Your last name: <%= ((Account)session.getAttribute("user")).getFirstName() %><br/>
-    </h3>
+<h3>
+    Your informations <br/>
+    Your email: <%= ((Account)session.getAttribute("user")).getEmailUser() %><br/>
+    Your first name: <%= ((Account)session.getAttribute("user")).getName() %><br/>
+    Your last name: <%= ((Account)session.getAttribute("user")).getFirstName() %><br/>
+</h3>
 
     <c:if test="${ requestScope.page != null }">
         <jsp:include page="${ requestScope.page }"/>

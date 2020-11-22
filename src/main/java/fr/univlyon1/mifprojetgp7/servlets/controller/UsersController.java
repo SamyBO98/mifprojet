@@ -2,7 +2,11 @@ package fr.univlyon1.mifprojetgp7.servlets.controller;
 
 
 import fr.univlyon1.mifprojetgp7.metier.AccountM;
+import fr.univlyon1.mifprojetgp7.metier.ContributorM;
+import fr.univlyon1.mifprojetgp7.metier.EventM;
+import fr.univlyon1.mifprojetgp7.metier.InterestM;
 import fr.univlyon1.mifprojetgp7.model.Account;
+import fr.univlyon1.mifprojetgp7.model.Interest;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletConfig;
@@ -25,12 +29,18 @@ import static fr.univlyon1.mifprojetgp7.utils.PasswordHashing.*;
 public class UsersController extends HttpServlet {
 
     AccountM account;
+    InterestM interest;
+    EventM event;
+    ContributorM contributor;
     private static final Logger LOGGER = Logger.getLogger(UsersController.class.getName());
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         account = new AccountM((EntityManager) config.getServletContext().getAttribute("em"));
+        interest = new InterestM((EntityManager) config.getServletContext().getAttribute("em"));
+        event = new EventM((EntityManager) config.getServletContext().getAttribute("em"));
+        contributor = new ContributorM((EntityManager) config.getServletContext().getAttribute("em"));
     }
 
     @Override
@@ -55,6 +65,15 @@ public class UsersController extends HttpServlet {
                     LOGGER.log(Level.SEVERE,"Exception occured",e);
                 }
 
+            } else if (uri.get(0).equals("profile")){
+                page = "users/user.jsp";
+                req.setAttribute("page", page);
+                List<Interest> interests = interest.getInterests((Account) req.getSession(true).getAttribute("user"));
+                req.setAttribute("interests", interests);
+                int countContribs = contributor.getContributors((Account) req.getSession(true).getAttribute("user")).size();
+                req.setAttribute("countContribs", countContribs);
+                int countCreated = event.getEvent((Account) req.getSession(true).getAttribute("user")).size();
+                req.setAttribute("countCreated", countCreated);
             }
         }
 
