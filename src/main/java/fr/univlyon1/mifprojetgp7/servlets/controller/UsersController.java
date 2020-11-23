@@ -118,44 +118,30 @@ public class UsersController extends HttpServlet {
                         .getAttribute("user")).size();
                 req.setAttribute("countCreated", countCreated);
             } else {
-                 try {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + EVENTS_URI);
-                    return;
-                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
-                }
-
+                tryAndCatch(req, resp, EVENTS_URI);
             }
         } else {
-             try {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + EVENTS_URI);
-                return;
-             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
-            }
-
+            tryAndCatch(req, resp, EVENTS_URI);
         }
 
         if (req.getSession(true).getAttribute("user") == null) {
-             try {
-                req.getRequestDispatcher("/index.jsp").include(req, resp);
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
-            } catch (ServletException s) {
-                LOGGER.log(Level.SEVERE, "Servlet Exception occured", s);
-            }
-
+            tryAndCatchDoubleException(req, resp, "/index.jsp");
         } else {
-             try {
-                req.getRequestDispatcher("/WEB-INF/jsp/welcome.jsp").include(req, resp);
-             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
-            } catch (ServletException s) {
-                LOGGER.log(Level.SEVERE, "Servlet Exception occured", s);
-            }
-
+            tryAndCatchDoubleException(req, resp, "/WEB-INF/jsp/welcome.jsp");
         }
 
+    }
+
+    private void tryAndCatchDoubleException(final HttpServletRequest req,
+                                            final HttpServletResponse resp,
+                                            final String lastParamRedirect) {
+        try {
+            req.getRequestDispatcher(lastParamRedirect).include(req, resp);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
+        } catch (ServletException s) {
+            LOGGER.log(Level.SEVERE, "Servlet Exception occured", s);
+        }
     }
 
     @Override
@@ -212,22 +198,10 @@ public class UsersController extends HttpServlet {
                     }
                 }
             } else {
-                 try {
-                    resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + EVENTS_URI);
-                    return;
-                 } catch (IOException e) {
-                    LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
-                }
-
+                tryAndCatch(req, resp, EVENTS_URI);
             }
         } else {
-             try {
-                resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + EVENTS_URI);
-                return;
-             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
-            }
-
+            tryAndCatch(req, resp, EVENTS_URI);
         }
 
     }

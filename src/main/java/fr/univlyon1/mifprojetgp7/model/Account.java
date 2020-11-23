@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Account")
+@SuppressWarnings("squid:S1948")
 public class Account implements Serializable {
     @Id
     @JoinColumn(name = "email")
