@@ -216,7 +216,6 @@ public class EventsController extends HttpServlet {
                                        final String lastParam) {
         try {
             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParam);
-            return;
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
         }
@@ -263,7 +262,6 @@ public class EventsController extends HttpServlet {
                                      final String lastParamRedirect) {
          try {
             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect);
-            return;
          } catch (IOException e) {
             LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
         }
@@ -274,7 +272,6 @@ public class EventsController extends HttpServlet {
          try {
             resp.sendRedirect("/" + sourceURI(req.getRequestURI())
                     + lastParamRedirect + textFilter);
-            return;
          } catch (IOException e) {
             LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
         }

@@ -185,7 +185,6 @@ public class UsersController extends HttpServlet {
                              final HttpServletResponse resp, final String lastParamRedirect) {
          try {
             resp.sendRedirect("/" + sourceURI(req.getRequestURI()) + lastParamRedirect);
-            return;
          } catch (IOException e) {
             LOGGER.log(Level.SEVERE, EXCEPTION_OCCURED, e);
         }
