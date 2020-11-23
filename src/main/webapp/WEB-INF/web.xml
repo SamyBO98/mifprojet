@@ -21,7 +21,6 @@
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
 
-
   <filter>
     <filter-name>auth</filter-name>
     <filter-class>fr.univlyon1.mifprojetgp7.servlets.filter.AuthFilter</filter-class>
