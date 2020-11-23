@@ -27,6 +27,8 @@ import static fr.univlyon1.mifprojetgp7.utils.ParseURI.parseUri;
 import static fr.univlyon1.mifprojetgp7.utils.ParseURI.sourceURI;
 
 @WebServlet(name = "EventsController", urlPatterns = {"/events", "/events/*"})
+// We use our doGet to manage many actions so we need more than 15 Cognitive Complexity
+@SuppressWarnings({"squid:S3776", "squid:S2209", "squid:S2696"})
 public class EventsController extends HttpServlet {
 
     private static EventM event;

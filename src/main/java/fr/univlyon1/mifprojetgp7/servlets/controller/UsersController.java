@@ -145,9 +145,6 @@ public class UsersController extends HttpServlet {
     }
 
     @Override
-    //Complexity of 16 instead of 15 allows us to declare variables to have a proper code
-    //We redefine an if statement to be proper
-    //@SuppressWarnings("squid:S3776")
     protected void doPost(final HttpServletRequest req,
                           final HttpServletResponse resp) throws ServletException, IOException {
         LOGGER.log(Level.FINE, "POST");
