@@ -11,7 +11,8 @@ import fr.univlyon1.mifprojetgp7.metier.CategoryM;
 import fr.univlyon1.mifprojetgp7.model.Category;
 
 public class CategoryMTest {
-    
+
+
     EntityManager em;
     CategoryM categoryM;
     

@@ -145,66 +145,45 @@ public class UsersController extends HttpServlet {
     }
 
     @Override
+    //Complexity of 16 instead of 15 allows us to declare variables to have a proper code
+    //We redefine an if statement to be proper
+    //@SuppressWarnings("squid:S3776")
     protected void doPost(final HttpServletRequest req,
                           final HttpServletResponse resp) throws ServletException, IOException {
         LOGGER.log(Level.FINE, "POST");
         List<String> uri = parseUri(req.getRequestURI(), "users");
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        String passwordConfirm = req.getParameter("passwordconfirm");
+        String name = req.getParameter("name");
+        String firstname = req.getParameter("firstname");
+        final int length = 30;
 
-        if (uri.size() == 1) {
-            if (uri.get(0).equals("signup")) {
-                String email = req.getParameter("email");
-                String password = req.getParameter("password");
-                String passwordConfirm = req.getParameter("passwordconfirm");
-                String name = req.getParameter("name");
-                String firstname = req.getParameter("firstname");
-                final int length = 30;
-                if (password.equals(passwordConfirm) && !password.equals("")) {
-                    //Generate Salt (stored in DB)
-                    String salt = getSalt(length);
-                    String securedPassword = generateSecurePassword(password, salt);
-
-                    if (account.createAccount(email, name, firstname,
-                            securedPassword, salt) != null) {
-                        tryAndCatch(req, resp, USERS_LOGIN_URI);
-
-                    } else {
-                        tryAndCatch(req, resp, "/users/signup");
-
-                    }
-
-                } else {
-                    tryAndCatch(req, resp, "/users/signup");
-
-                }
-
-            } else if (uri.get(0).equals("login")) {
-                String email = req.getParameter("email");
-                String password = req.getParameter("password");
-
-                Account user = account.getAccount(email);
-
-                if (user == null) {
-                    tryAndCatch(req, resp, USERS_LOGIN_URI);
-
-                } else {
-                    //Check if matches
-                    if (verifyUserPassword(password, user.getPassword(), user.getSalt())) {
-                        req.getSession(true).setAttribute("user", user);
-                        tryAndCatch(req, resp, EVENTS_URI);
-
-                    } else {
-                        tryAndCatch(req, resp, USERS_LOGIN_URI);
-
-                    }
-                }
+        if (uri.size() == 1 && uri.get(0).equals("signup")
+                && password.equals(passwordConfirm) && !password.equals("")) {
+            String salt = getSalt(length);
+            String securedPassword = generateSecurePassword(password, salt);
+            if (account.createAccount(email, name, firstname,
+                    securedPassword, salt) != null) {
+                tryAndCatch(req, resp, USERS_LOGIN_URI);
             } else {
+                tryAndCatch(req, resp, "/users/signup");
+            }
+        } else if (uri.get(0).equals("login")) {
+            Account user = account.getAccount(email);
+            if (user == null) {
+                tryAndCatch(req, resp, USERS_LOGIN_URI);
+            } else if (verifyUserPassword(password, user.getPassword(), user.getSalt())) {
+                req.getSession(true).setAttribute("user", user);
                 tryAndCatch(req, resp, EVENTS_URI);
+            } else {
+                tryAndCatch(req, resp, USERS_LOGIN_URI);
             }
         } else {
             tryAndCatch(req, resp, EVENTS_URI);
         }
-
     }
+
     private void tryAndCatch(final HttpServletRequest req,
                              final HttpServletResponse resp, final String lastParamRedirect) {
          try {

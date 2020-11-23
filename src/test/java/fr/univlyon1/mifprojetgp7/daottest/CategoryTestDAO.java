@@ -14,7 +14,8 @@ import fr.univlyon1.mifprojetgp7.dao.CategoryDAO;
 import fr.univlyon1.mifprojetgp7.model.Category;
 
 public class CategoryTestDAO {
-    
+
+
     private EntityManager em;
     private CategoryDAO dao;
     

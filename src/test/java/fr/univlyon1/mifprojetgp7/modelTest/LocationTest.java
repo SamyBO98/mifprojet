@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LocationTest {
 
+
     Location locationT = new Location();
 
     @Test

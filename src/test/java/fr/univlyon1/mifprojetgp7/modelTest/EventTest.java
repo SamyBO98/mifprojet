@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class EventTest {
 
+
     Event eventT = new Event();
 
     @Test

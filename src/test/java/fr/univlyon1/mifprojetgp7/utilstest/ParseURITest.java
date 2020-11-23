@@ -9,7 +9,8 @@ import org.junit.Test;
 import fr.univlyon1.mifprojetgp7.utils.ParseURI;
 
 public class ParseURITest {
-    
+
+
     @Test
     public void parseUri() {
 	List<String> uri = ParseURI.parseUri("/blabla/events/salut/coucou", "events");

@@ -17,7 +17,8 @@ import fr.univlyon1.mifprojetgp7.model.Category;
 import fr.univlyon1.mifprojetgp7.model.Interest;
 
 public class InterestMTest {
-    
+
+
     EntityManager em;
     InterestM interestM;
     Account userTest;

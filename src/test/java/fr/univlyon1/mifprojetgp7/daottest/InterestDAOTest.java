@@ -18,6 +18,7 @@ import fr.univlyon1.mifprojetgp7.model.Category;
 import fr.univlyon1.mifprojetgp7.model.Interest;
 
 public class InterestDAOTest {
+
     private EntityManager em;
     private InterestDAO dao;
     private Account userTest;

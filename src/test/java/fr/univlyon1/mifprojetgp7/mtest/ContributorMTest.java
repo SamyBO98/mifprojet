@@ -19,7 +19,8 @@ import fr.univlyon1.mifprojetgp7.model.Contributor;
 import fr.univlyon1.mifprojetgp7.model.Event;
 
 public class ContributorMTest {
-    
+
+
     EntityManager em;
     ContributorM contributorM;
     Account userTest;

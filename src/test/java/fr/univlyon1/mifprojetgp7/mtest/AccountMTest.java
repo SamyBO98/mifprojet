@@ -12,6 +12,7 @@ import fr.univlyon1.mifprojetgp7.model.Account;
 
 public class AccountMTest {
 
+
     EntityManager em;
     AccountM accountM;
 

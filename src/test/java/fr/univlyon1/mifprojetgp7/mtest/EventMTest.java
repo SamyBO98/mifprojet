@@ -18,7 +18,8 @@ import fr.univlyon1.mifprojetgp7.model.Category;
 import fr.univlyon1.mifprojetgp7.model.Event;
 
 public class EventMTest {
-    
+
+
     EntityManager em;
     EventM eventM;
     CategoryM categoryM;
