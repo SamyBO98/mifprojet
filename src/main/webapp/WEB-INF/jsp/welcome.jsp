@@ -9,9 +9,10 @@
 </head>
 <body>
     <jsp:include page="${request.requestURI}/menu.jsp" />
-    
+
     <c:if test="${ requestScope.page != null }">
         <jsp:include page="${ requestScope.page }"/>
     </c:if>
 </body>
+<jsp:include page="../../footer.jsp" />
 </html>
