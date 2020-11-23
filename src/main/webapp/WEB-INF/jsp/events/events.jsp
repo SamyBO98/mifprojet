@@ -9,7 +9,7 @@
         </div>
         <div class="row">
         <c:forEach items="${ requestScope.events }" var="event" varStatus="status">
-            <div class="col-lg-3 col-md-3 col-sm-2 mb-5">
+            <div class="col-lg-3 col-md-4 col-sm-12 mb-5">
                 <div class="card mx-auto">
                     <div class="card-body">
                         <h3 class="card-title">${event.title}</h3>

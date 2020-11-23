@@ -26,7 +26,7 @@ public class AuthFilter extends HttpFilter implements Filter {
     @Override
     protected void doFilter(final HttpServletRequest req, final HttpServletResponse res,
                             final FilterChain chain) throws IOException, ServletException {
-        res.setContentType("text/html; charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
         if (req.getRequestURI().contains("users")) {
             List<String> urls = parseUri(req.getRequestURI(), "users");
             if (urls.size() == 1) {
@@ -49,7 +49,7 @@ public class AuthFilter extends HttpFilter implements Filter {
                 return;
             }
         }
-
+        res.setContentType("text/html; charset=UTF-8");
         super.doFilter(req, res, chain);
     }
 
