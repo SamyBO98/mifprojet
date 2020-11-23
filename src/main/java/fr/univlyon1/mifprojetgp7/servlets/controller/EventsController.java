@@ -226,8 +226,7 @@ public class EventsController extends HttpServlet {
         String reqUri = req.getRequestURI();
         List<String> uri = parseUri(reqUri, EVENTS_STRING);
 
-        if (uri.size() == 1) {
-            if (uri.get(0).equals("create")) {
+        if (uri.size() == 1 && uri.get(0).equals("create")) {
                 String title = req.getParameter(TITLE_STRING);
                 String contenu = req.getParameter("contenu");
                 String categoryName = req.getParameter("category");
@@ -245,26 +244,12 @@ public class EventsController extends HttpServlet {
                         tryAndCatchRedirect(req, resp, "/events/create");
 
                     }
-                } else {
-                    //
-                    tryAndCatchRedirect(req, resp, "/events/create");
-
                 }
-            } else {
-                //
-                tryAndCatchRedirect(req, resp, EVENTS_URI);
 
-            }
-        } else if (uri.size() == 2) {
-            if (uri.get(0).equals(SEARCH_STRING) && uri.get(1).equals(TITLE_STRING)) {
+        } else if (uri.size() == 2 && uri.get(0).equals(SEARCH_STRING)
+                && uri.get(1).equals(TITLE_STRING)) {
                 String textFilter = req.getParameter("text-filter");
                 tryAndCatchRedirect(req, resp, "/events/search/title/", textFilter);
-
-
-            } else {
-                tryAndCatchRedirect(req, resp, EVENTS_URI);
-
-            }
         } else {
             tryAndCatchRedirect(req, resp, EVENTS_URI);
 
