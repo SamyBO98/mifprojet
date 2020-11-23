@@ -41,7 +41,7 @@ public class EventDAOTest {
 	em.getTransaction().commit();
 	assertEquals(e.getAccount(), userTest);
 	assertEquals(e.getCategory(), c);
-	assertEquals(e.getTitle(), "test-event");
+	assertEquals("test-event", e.getTitle());
     }
     
     @Test

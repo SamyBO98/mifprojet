@@ -23,7 +23,7 @@ public class AccountMTest {
     @Test
     public void getUserTest() {
 	Account userTest = accountM.getAccount("user@test.com");
-	assertEquals(userTest.getEmailUser(), "user@test.com");
+	assertEquals("user@test.com", userTest.getEmailUser());
     }
 
 }

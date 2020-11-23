@@ -40,7 +40,7 @@ public class EventMTest {
 	Event e = eventM.createEvent("test-event", "test", userTest, c);
 	assertEquals(e.getAccount(), userTest);
 	assertEquals(e.getCategory(), c);
-	assertEquals(e.getTitle(), "test-event");
+	assertEquals("test-event", e.getTitle());
     }
     
     @Test
