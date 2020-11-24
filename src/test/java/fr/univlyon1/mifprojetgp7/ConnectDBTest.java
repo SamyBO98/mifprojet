@@ -17,13 +17,6 @@ public class ConnectDBTest {
     public ConnectDBTest() {
 	connectDB = new ConnectDB();
     }
-
-    @Test
-    public void setupConnectionDB(){
-        System.out.println(">> TEST: Setup Connection DB <<");
-        EntityManager em = Persistence.createEntityManagerFactory("mifprojetgp7-database").createEntityManager();
-        em.close();
-    }
     
     @Test
     public void getEm() {
