@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
+import org.junit.After;
 import org.junit.Test;
 
 import fr.univlyon1.mifprojetgp7.metier.AccountM;
@@ -71,7 +72,6 @@ public class EventMTest {
     
     @Test
     public void deleteEvent() {
-	EventM eventM = new EventM(em);
 	List<Event> eventList = eventM.getEvent(userTest);
 	ContributorM c = new ContributorM(em);
 	for(Event e : eventList) {
@@ -84,5 +84,16 @@ public class EventMTest {
 	assertEquals(0,eventM.getEvent(userTest).size());
     }
     
-    
+    @After
+    public void cleanUp() {
+	List<Event> eventList = eventM.getEvent(userTest);
+	ContributorM c = new ContributorM(em);
+	for(Event e : eventList) {
+	    if(c.getContributors(e).size() != 0) {
+		c.deleteContributors(c.getContributors(e));
+	    }
+	    eventM.deleteEvent(e);
+	}
+    }
+     
 }

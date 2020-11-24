@@ -7,12 +7,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
+import org.junit.After;
 import org.junit.Test;
 
 import fr.univlyon1.mifprojetgp7.dao.AccountDAO;
 import fr.univlyon1.mifprojetgp7.dao.CategoryDAO;
 import fr.univlyon1.mifprojetgp7.dao.EventDAO;
 import fr.univlyon1.mifprojetgp7.metier.ContributorM;
+import fr.univlyon1.mifprojetgp7.metier.EventM;
 import fr.univlyon1.mifprojetgp7.model.Account;
 import fr.univlyon1.mifprojetgp7.model.Category;
 import fr.univlyon1.mifprojetgp7.model.Event;
@@ -81,6 +83,19 @@ public class EventDAOTest {
 	    dao.deleteEvent(e);
 	    em.getTransaction().commit();
 	    assertEquals(null, dao.getEvent(e.getId()));
+	}
+    }
+    
+    @After
+    public void cleanUp() {
+	EventM eventM = new EventM(em);
+	List<Event> eventList = eventM.getEvent(userTest);
+	ContributorM c = new ContributorM(em);
+	for(Event e : eventList) {
+	    if(c.getContributors(e).size() != 0) {
+		c.deleteContributors(c.getContributors(e));
+	    }
+	    eventM.deleteEvent(e);
 	}
     }
     
