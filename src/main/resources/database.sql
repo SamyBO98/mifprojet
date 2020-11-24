@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Interest (
 
 INSERT INTO Category VALUES('Sports');
 INSERT INTO Category VALUES('Jeux');
-INSERT INTO Category VALUES('Théâtre');
+INSERT INTO Category VALUES('Theatre');
 INSERT INTO Category VALUES('Politique');
 INSERT INTO Category VALUES('Etudes');
 INSERT INTO Category VALUES('Insolite');

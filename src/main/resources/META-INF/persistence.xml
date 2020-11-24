@@ -5,8 +5,8 @@
             <!--property name="hibernate.connection.driver_class" value="org.h2.Driver" /-->
             <!--property name="hibernate.connection.url" value="jdbc:h2:tcp://localhost/~/gdw-db" /-->
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:postgresql://192.168.74.206/p1709456" />
-            <property name="hibernate.connection.user" value="p1709456" />
+            <property name="hibernate.connection.url" value="jdbc:postgresql://192.168.74.206/mifprojet" />
+            <property name="hibernate.connection.user" value="mifprojet" />
             <property name="hibernate.connection.password" value="password" />
             <!-- Utiliser le fichier microblog.sql pour créer les tables -->
             <property name="hibernate.hbm2ddl.auto" value="validate" />
