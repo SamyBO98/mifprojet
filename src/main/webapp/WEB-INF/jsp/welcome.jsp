@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <title>Connecté</title>
+    <meta charset="utf-8"/>
 </head>
 <body>
     <jsp:include page="${request.requestURI}/menu.jsp" />
